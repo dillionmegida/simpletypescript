@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Indie+Flower&family=Righteous&display=swap");
+
+:root {
+  --primary-color: #270b16;
+
+  --text-color: #dbdada;
+  --white-100: #371826;
+  --white-200: #704b5a;
+
+  --heading-font: Righteous, system-ui, sans-serif;
+  --text-font: Raleway, system-ui, sans-serif;
+  --funny-font: "Indie Flower";
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--text-font);
+  background: var(--primary-color);
+}
+
+body {
+  color: var(--text-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading-font);
+}
+
+h1 {
+  font-size: clamp(2rem, 7vw, 4rem);
+
+  .main-title {
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+  }
+}
+
+h2 {
+  font-size: clamp(1.6rem, 7vw, 2.5rem);
+}
+
+code {
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.container.padding {
+  padding: 40px 20px;
+}
+
+a {
+  text-decoration: none;
+}

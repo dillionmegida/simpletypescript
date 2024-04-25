@@ -1,0 +1,50 @@
+---
+import { getCollection } from "astro:content"
+import { type Tip } from "../types/Tip"
+import Link from "./Link.astro"
+import { getFullPath } from "../helpers/path"
+
+const tips: Tip[] = await getCollection("tip")
+console.log(tips)
+---
+
+<section class="tips-section">
+	<h2>Tips</h2>
+	<div class="tips">
+		{
+			tips.map(tip => {
+				const path = getFullPath("tips", tip.slug)
+
+				return (
+					<Link href={path} className="tip">
+						{tip.data.title}
+					</Link>
+				)
+			})
+		}
+	</div>
+</section>
+
+<style is:global lang="scss">
+	.tips-section {
+		margin: 40px 0;
+	}
+
+	.tips {
+		padding: 20px 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 20px;
+
+		.tip {
+			border: 1px solid var(--white-200);
+			padding: 20px;
+			color: var(--text-color);
+			transition: 300ms;
+
+			&:hover {
+				background-color: var(--white-100);
+			}
+		}
+	}
+</style>

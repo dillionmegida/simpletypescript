@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from "astro:content"
+import BaseDocument from "../components/BaseDocument.astro"
+import type { Tip, TipFrontmatter } from "../types/Tip"
+
+type Props = TipFrontmatter
+
+console.log(Astro.props)
+
+const { title } = Astro.props
+---
+
+<BaseDocument title={title}>
+	<main class="container padding">
+		<h1>{title}</h1>
+	</main>
+</BaseDocument>

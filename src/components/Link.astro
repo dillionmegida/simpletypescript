@@ -1,0 +1,32 @@
+---
+import Icon from "./Icon.astro"
+
+type Props = {
+	newTab?: boolean
+	href: string
+	className?: string
+}
+
+const { newTab = false, href, className } = Astro.props
+
+const attr: Props & { target?: "_blank"; rel?: "noopener noreferrer" } = {
+	href,
+	className,
+}
+
+if (newTab) {
+	attr.target = "_blank"
+	attr.rel = "noopener noreferrer"
+}
+
+const icon = href.startsWith("https") ? "twitter" : null
+---
+
+<a {...attr}> {icon && <Icon type="x" size={15} />} <slot /></a>
+
+<style>
+	a {
+		/* color: inherit;
+   background-color: inherit; */
+	}
+</style>
