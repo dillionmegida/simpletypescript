@@ -1,14 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Indie+Flower&family=Righteous&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:ital,wght@0,100..900;1,100..900&family=Indie+Flower&family=Righteous&display=swap");
 
 :root {
   --primary-color: #270b16;
 
-  --text-color: #dbdada;
+  --text-color: #c9c7c7;
   --white-100: #371826;
   --white-200: #704b5a;
 
+  --blue: rgb(41, 151, 246);
+  --yellow: rgb(246, 243, 41);
+  --green: rgb(188, 246, 41);
+
   --heading-font: Righteous, system-ui, sans-serif;
-  --text-font: Raleway, system-ui, sans-serif;
+  --text-font: Manrope, system-ui, sans-serif;
   --funny-font: "Indie Flower";
 }
 
@@ -25,6 +29,8 @@ html {
 
 body {
   color: var(--text-color);
+  font-family: var(--text-font);
+  font-weight: 300;
 }
 
 h1,
@@ -34,6 +40,7 @@ h4,
 h5,
 h6 {
   font-family: var(--heading-font);
+  line-height: 1;
 }
 
 h1 {

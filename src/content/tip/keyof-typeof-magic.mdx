@@ -1,0 +1,117 @@
+---
+title: "keyof typeof magic"
+description: "keyof typeof allows you to easily create a type from the properites in an existing object"
+pubDate: "Apr 30 2024"
+heroImage: "/demos/easy-grid.png"
+---
+
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+
+The `keyof` and `typeof` keyword are very useful keywords that you can use for many interesting things. One of which is **creating types from the keys of an object**.
+
+The `typeof` keyword exists in the JavaScript world as well as the TypeScript world and it does similar things: get the type of a value.
+
+The `keyof` keyword creates a type out of the keys of an object type. Let's see examples:
+
+<CodeBlock
+  code={`type Person = {
+  name: string;
+  age: string;
+  languages: string[]
+}
+
+let key: keyof Person
+// ts-info **key** key: 'name' | 'age' | 'languages'`}
+  lang="ts"
+/>
+
+In this example, `key` would be a union type of the properties (keys) in the `Person` Type:
+
+<CodeBlock
+  code={`type Person = {
+  name: string;
+  age: string;
+  languages: string[]
+}
+
+let key: keyof Person
+
+key = 'name' // fine
+
+key = 'something'
+// ts-error **key** Type '"something"' is not assignable to type 'keyof Person'`}
+  lang="ts"
+/>
+
+Let's say we had an object like this:
+
+```js
+const dutchTranslation = {
+  "hello": "hoi",
+  "good morning": "goedemorgen",
+  "difficult": "moeilijk",
+  "grandma": "oma"
+}
+```
+
+The `dutchTranslation` object has key-value pairs where the key is the english word and the value is the dutch word. How can we create a key type from the keys in this object? You might think `keyof`:
+
+<CodeBlock
+  code={`const dutchTranslation = {
+  "hello": "hoi",
+  "good morning": "goedemorgen",
+  "difficult": "moeilijk",
+  "grandma": "oma"
+}
+
+type TranslationKey = keyof dutchTranslation
+// ts-error **dutchTranslation** 'dutchTranslation' refers to a value, but is being used as a type here.`}
+  lang="ts"
+/>
+
+`keyof` does not work because it expects a type, not a value. In `keyof dutchTranslation`, `dutchTranslation` points to a value. So, what we have to do first is get the type of `dutchTranslation`. Here, we can use `typeof:
+
+<CodeBlock
+  code={`const dutchTranslation = {
+  "hello": "hoi",
+  "good morning": "goedemorgen",
+  "difficult": "moeilijk",
+  "grandma": "oma"
+}
+
+type DutchTranslationType = typeof dutchTranslation`}
+  lang="ts"
+/>
+
+`DutchTranslationType` will look like this:
+
+```ts
+{
+  "hello": string;
+  "good morning": string;
+  "difficult": string;
+  "grandma": string;
+}
+```
+
+Now that we have the type, we can use `keyof`:
+
+<CodeBlock
+  code={`const dutchTranslation = {
+  "hello": "hoi",
+  "good morning": "goedemorgen",
+  "difficult": "moeilijk",
+  "grandma": "oma"
+}
+
+type DutchTranslationType = typeof dutchTranslation
+type TranslationKey = keyof DutchTranslationType
+// ts-info **TranslationKey** TranslationKey: 'hello' | 'good morning' | 'difficult' | 'grandma' `}
+  lang="ts"
+/>
+
+`TranslationKey` holds a union type of the keys in the object. You can also combine `keyof` and `typeof` like this:
+
+```ts
+type TranslationKey = keyof typeof dutchTranslation
+```

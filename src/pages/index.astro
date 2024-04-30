@@ -1,13 +1,55 @@
 ---
 import BaseDocument from "../components/BaseDocument.astro"
-import Articles from "../components/Tips.astro"
+import Link from "../components/Link.astro"
+import Tips from "../components/Tips.astro"
+import Info from "../components/mdx/Info.astro"
+import { LINKS } from "../constants"
 ---
 
-<BaseDocument title="Welcome to Astro." image="" description="">
+<BaseDocument title="Simple TypeScript" description="Simplified resources on TypeScript from tips to courses to solutions from beginner to advanced">
 	<main class="container padding">
-		<h1 class="main-title">simpletypescript.dev</h1>
-		<Articles />
+		<h1 class="main-title">simple:<span>typescript</span></h1>
+		<p class="tagline">
+			Simplified resources on TypeScript from tips to courses to solutions from
+			beginner to advanced, created by <Link
+				newTab={true}
+				href={LINKS.mainWebsite}>Dillion</Link
+			>
+		</p>
+		<Info>
+			This website is still a work in progress, but you can find some resources
+			already below
+		</Info>
+		<Tips />
 	</main>
 </BaseDocument>
 
-<style></style>
+<style is:global lang="scss">
+	main {
+		font-size: clamp(1rem, 7vw, 1.2rem);
+	}
+
+	h1 {
+		margin-bottom: 15px;
+
+    &.main-title span {
+      color: var(--yellow);
+      margin-left: 5px;
+    }
+	}
+
+	.tagline {
+		font-size: 1.1em;
+		margin-bottom: 30px;
+    text-wrap: balance;
+
+		a {
+			color: var(--green);
+      transition: 300ms;
+
+      &:hover {
+        color: var(--blue);
+      }
+		}
+	}
+</style>

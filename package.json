@@ -12,10 +12,14 @@
   "dependencies": {
     "@astrojs/check": "^0.5.10",
     "@astrojs/mdx": "^2.3.1",
-    "astro": "^4.6.4",
-    "typescript": "^5.4.5"
+    "@astrojs/partytown": "^2.1.0",
+    "@astrojs/prism": "^3.1.0",
+    "@astrojs/sitemap": "^3.1.4",
+    "astro": "^4.6.4"
   },
   "devDependencies": {
-    "sass": "^1.75.0"
+    "@types/node": "^20.12.7",
+    "sass": "^1.75.0",
+    "typescript": "5.2.2"
   }
 }

@@ -19,7 +19,7 @@ if (newTab) {
 	attr.rel = "noopener noreferrer"
 }
 
-const icon = href.startsWith("https") ? "twitter" : null
+const icon = href.startsWith("https://twitter") ? "twitter" : null
 ---
 
 <a {...attr}> {icon && <Icon type="x" size={15} />} <slot /></a>

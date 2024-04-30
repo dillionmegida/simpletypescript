@@ -6,4 +6,5 @@ export type Tip = {
 
 export type TipFrontmatter = {
   title: string
+  description: string
 }

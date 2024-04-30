@@ -1,8 +1,116 @@
 ---
-title: 'Use unknown instead of any'
-description: 'Lorem ipsum dolor sit amet'
-pubDate: 'Feb 02 2024'
-heroImage: '/demos/easy-grid.png'
+title: "Use unknown instead of any, it's safer"
+description: "The `any` type turns off type checks, but the unknown type doesn't"
+pubDate: "Apr 30 2024"
+heroImage: "/demos/easy-grid.png"
 ---
 
-hello
+import Info from "../../components/mdx/Info.astro"
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+
+<Info>
+  With `any`, you turn off type check from TypeScript, which can be harmful.
+  With `unknown`, your variables can still be of any type, but they are a safer
+  way to build applications because you still get type checks.
+</Info>
+
+`any` is a generic type in TypeScript which can be "anything". It is often used to escape the type system instead of having to provide the exact types for different things:
+
+```ts
+let variable: any
+
+variable.push() // TS says nothing
+Object.values(variable) // TS says nothing
+variable.startsWith() // TS says nothing
+```
+
+`any` is a placeholder for `array` so `.push()` could exist.
+
+`any` is a placeholder for `object` so it can be passed as an argument to `Object.values`
+
+`any` is a placeholder for `string` so `.startsWith` could exist.
+
+The problem with this is that, **it is not safe**. TypeScript is supposed to help you identify type errors, but using `any` would turn off that support. If a variable is not an array, TypeScript should tell you `.push()` does not exist:
+
+<CodeBlock
+  code={`let variable: string = "hello"
+
+// ts-error **push** Property 'push' does not exist on type 'string'
+variable.push(5, 6)`}
+  lang="ts"
+/>
+
+But TypeScript won't say anything if you used `any`:
+
+```ts
+let variable: any = "hello"
+
+variable.push(5, 6)
+```
+
+Sometimes you do not want to provide a type, or maybe a variable can be different types, so you just use `any`. However, there's something even better can use: `unknown`.
+
+<Info type="large">`unknown` is like the **safer version** of `any`.</Info>
+
+So what difference does `unknown` make?
+
+With `unknown`, you are saying "this can be any type but I don't know what that type is yet". The beauty of this is that, before you use that variable for certain operations, you have to first "check" if that operation is possible.
+
+Let's look at the string example from earlier:
+
+```ts
+let variable: any = [1, 2]
+
+variable.startsWith() // TS says nothing
+
+// but this will throw an error during runtime
+// because startsWith does not exist on a string
+```
+
+Here, `variable` is of `any`. But it actually holds an array, and arrays do not have a `startsWith` method. But TypeScript does not say anything. But let's try `unknown`:
+
+<CodeBlock
+  code={`let variable: unknown = [1, 2]
+
+// ts-error **variable** 'variable' is of type 'unknown'
+variable.startsWith()`}
+  lang="ts"
+/>
+
+What you see here is TypeScript complaining. TypeScript is like "well, you just told me that you do 'not know' the type for this variable, so I cannot guarantee you that this variable has the `startsWith` method".
+
+So what if you wanted to use the `startsWith` method? Then you have to "tell" TypeScript that this is a string. How? **Type Guards**:
+
+```ts
+let variable: unknown = [1, 2]
+
+if (typeof variable === "string") {
+  variable.startsWith() // TS says "we good"
+}
+```
+
+By checking if `variable` is a string, then you give TypeScript the guarantee that you are working with a string, and so it approves the `startsWith` method.
+
+This is why I say that `unknown` is a safer type than `any`. With `any`, you do not have to provide such checks. You could choose to do it, but you aren't required to do to get TypeScript to stop yelling at you. But with `unknown`, you have to, to get a pass.
+
+Type guards can exist in different ways. For example, you can use `Array.isArray()` to check if a value is of an array type:
+
+```ts
+let variable: unknown = [1, 2]
+
+if (typeof variable === "string") {
+  variable.startsWith() // TS says "we good"
+}
+
+if (Array.isArray(variable)) {
+  variable.push(3, 4) // TS says "we good"
+}
+```
+
+{/* show example with instance */}
+
+See how safe our applications are with type support?
+
+---
+
+So when you're not sure what type to give a variable, instead of using `any`, go for `unknown`. While both types can mean "any type", `unknown` ensures that you do type checks before proceeding to carrying out certain operations.

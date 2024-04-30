@@ -1,7 +1,7 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content"
 import Demo from "../../layouts/Tip.astro"
-import { Tip } from "../../types/Tip"
+import type { Tip } from "../../types/Tip"
 
 export async function getStaticPaths() {
 	const tips: Tip[] = await getCollection("tip")
@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 		props: tip,
 	}))
 }
-type Props = CollectionEntry<"demo">
+type Props = CollectionEntry<"tip">
 
 const demo = Astro.props
 const { Content } = await demo.render()

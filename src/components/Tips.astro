@@ -3,13 +3,13 @@ import { getCollection } from "astro:content"
 import { type Tip } from "../types/Tip"
 import Link from "./Link.astro"
 import { getFullPath } from "../helpers/path"
+import { addEllipsis } from "../helpers/string"
 
 const tips: Tip[] = await getCollection("tip")
-console.log(tips)
 ---
 
 <section class="tips-section">
-	<h2>Tips</h2>
+	<!-- <h2>Tips</h2> -->
 	<div class="tips">
 		{
 			tips.map(tip => {
@@ -17,7 +17,9 @@ console.log(tips)
 
 				return (
 					<Link href={path} className="tip">
-						{tip.data.title}
+						<span class="title">{tip.data.title}</span>
+						<hr />
+						<p class="description">{addEllipsis(tip.data.description)}</p>
 					</Link>
 				)
 			})
@@ -33,7 +35,7 @@ console.log(tips)
 	.tips {
 		padding: 20px 0;
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 		gap: 20px;
 
 		.tip {
@@ -44,6 +46,21 @@ console.log(tips)
 
 			&:hover {
 				background-color: var(--white-100);
+			}
+
+			.title {
+				font-size: 1.4em;
+				font-weight: bold;
+			}
+
+			hr {
+				border-color: var(--white-200);
+				width: 20%;
+				margin: 10px 0 20px;
+			}
+
+			.description {
+				font-size: 0.9em;
 			}
 		}
 	}

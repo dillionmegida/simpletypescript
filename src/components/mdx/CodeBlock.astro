@@ -1,0 +1,57 @@
+---
+import { Prism } from "@astrojs/prism"
+
+type Props = {
+	code: string
+	lang: string
+}
+
+const { code, lang } = Astro.props
+
+const tooltip = /\n\/\/\sts-(error|info)\s\*\*([^*]*)\*\*\s([^\n]*)/g
+
+const matches = [...code.matchAll(tooltip)]
+
+let match = matches[0]
+
+// for (const match of matches) {
+// 	console.log(match)
+// }
+
+// const replacer = match => {
+//   // console.log({...match})
+//   return `<span>${match}</span>`
+
+// }
+
+const codeWithoutTooltips = code.replaceAll(tooltip, "")
+
+// console.log(matches)
+// console.log(match[2])
+
+const hasLang = !!lang
+---
+
+<Prism code={codeWithoutTooltips} lang={lang} />
+{match && <span class={`tooltip ${match[1]}`}>{match[3]}</span>}
+
+<style lang="scss">
+  .tooltip {
+    position: relative;
+    top: -30px;
+    left: 1.5em;
+    padding: 10px;
+    font-size: 0.8em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    
+    &.error {
+      background-color: #a13a2f;
+    }
+    
+    &.info {
+      background-color: #2f5da1;
+
+    }
+  }
+</style>
