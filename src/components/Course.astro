@@ -18,8 +18,11 @@ const lessons: Lesson[] = await getCollection("course")
 
 				return (
 					<Link href={path} className="lesson">
-						<span class="title">{lesson.data.title}</span>
-						<hr />
+						<div class="lesson__cover">
+							<img src={lesson.data.cover} alt="" />
+						</div>
+						{/* <span class="title">{lesson.data.title}</span>
+						<hr /> */}
 						<p class="description">{addEllipsis(lesson.data.description)}</p>
 					</Link>
 				)
@@ -47,7 +50,6 @@ const lessons: Lesson[] = await getCollection("course")
 
 		.lesson {
 			border: 1px solid var(--white-200);
-			padding: 20px;
 			color: var(--text-color);
 			transition: 300ms;
 
@@ -68,6 +70,7 @@ const lessons: Lesson[] = await getCollection("course")
 
 			.description {
 				font-size: 0.9em;
+        padding: 20px;
 			}
 		}
 	}

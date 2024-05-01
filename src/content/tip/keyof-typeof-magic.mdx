@@ -20,7 +20,7 @@ The `keyof` keyword creates a type out of the keys of an object type. Let's see 
   languages: string[]
 }
 
-let key: keyof Person
+let /**/key/**/: keyof Person
 // ts-info **key** key: 'name' | 'age' | 'languages'`}
   lang="ts"
 />
@@ -38,7 +38,7 @@ let key: keyof Person
 
 key = 'name' // fine
 
-key = 'something'
+/**/key/**/ = 'something'
 // ts-error **key** Type '"something"' is not assignable to type 'keyof Person'`}
   lang="ts"
 />
@@ -64,7 +64,7 @@ The `dutchTranslation` object has key-value pairs where the key is the english w
   "grandma": "oma"
 }
 
-type TranslationKey = keyof dutchTranslation
+type /**/TranslationKey/**/ = keyof dutchTranslation
 // ts-error **dutchTranslation** 'dutchTranslation' refers to a value, but is being used as a type here.`}
   lang="ts"
 />
@@ -105,7 +105,7 @@ Now that we have the type, we can use `keyof`:
 }
 
 type DutchTranslationType = typeof dutchTranslation
-type TranslationKey = keyof DutchTranslationType
+type /**/TranslationKey/**/ = keyof DutchTranslationType
 // ts-info **TranslationKey** TranslationKey: 'hello' | 'good morning' | 'difficult' | 'grandma' `}
   lang="ts"
 />

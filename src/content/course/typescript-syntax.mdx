@@ -1,0 +1,105 @@
+---
+title: "TypeScript Syntax"
+description: "How do you type variables and functions?"
+pubDate: "May 01 2024"
+cover: "/course/typescript-syntax.png"
+---
+
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+import Info from "../../components/mdx/Info.astro"
+
+When writing TypeScript code, you type your variables with a colon `:` followed by the type.
+
+## Simple types
+
+Here's the syntax:
+
+```ts
+let name: string;
+```
+
+Here, we say the `name` variable has a **string** type. Which means, you can only assign values of that type to the variable:
+
+```ts
+let name: string;
+
+name = "deeecode" // fine
+namee = "typescript" // fine
+```
+
+Any attempt to assign something else to this type, you get a TypeScript error:
+
+<CodeBlock
+  code = {`let name: string; 
+
+/**/name/**/ = true
+// ts-error **name** Type 'boolean' is not assignable to type 'string'.
+`}
+  lang='ts'
+/>
+
+## Typing function parameters
+
+You can also type function parameters:
+
+```ts
+function sum(num1: number, num2: number) {
+  return num1 + num2
+}
+```
+
+Now when you pass a different type, you get an error:
+
+<CodeBlock
+  code = {`function sum(num1: number, num2: number) {
+  return num1 + num2
+}
+
+sum(10, /**/"50"/**/)
+// ts-error **"50"** Argument of type 'string' is not assignable to parameter of type 'number'.`}
+  lang='ts'
+/>
+
+Here, `"50"` is not a number and `num2` is expected to be a number.
+
+You can also type an array of items like this:
+
+<CodeBlock
+  code = {`function sum(nums: number[]) {
+  return nums.reduce((a, b) => a + b)
+}
+
+sum([2, 10, 100, /**/"hello"/**/])
+// ts-error **"hello"** Type 'string' is not assignable to type 'number'.`}
+  lang='ts'
+/>
+
+Here, we type `nums` to be "an array of numbers".  When we pass a string in the array, we get an error.
+
+## Return type of Function
+
+You can also type the returned value of a function:
+
+<CodeBlock
+  code = {`function sum(nums: number[]): number {
+  return nums.reduce((a, b) => a + b)
+}
+
+sum([2, 10, 100, /**/"hello"/**/])`}
+  lang='ts'
+/>
+
+By having `: number` after the parentheses, you specify the type of value that this function would return when called.
+
+Also, with an arrow function:
+
+```ts
+function sum(nums: number[]): number {
+  return nums.reduce((a, b) => a + b)
+}
+
+sum([2, 10, 100, "hello"])
+```
+
+There are many more types you can use.
+{/* Check them out [in the in-built types lesson](#). */}

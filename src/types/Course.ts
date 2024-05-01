@@ -9,4 +9,5 @@ export type Lesson = {
 export type LessonFrontmatter = {
   title: string
   description: string
+  cover?: string
 }

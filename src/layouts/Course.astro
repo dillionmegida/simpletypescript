@@ -15,16 +15,22 @@ const { title, description, cover } = Astro.props
 	</header>
 	<main class="container padding">
 		<h1>{title}</h1>
-		<div class="course-cover">
-			<img src={cover} alt="" />
-		</div>
+		{
+			cover ? (
+				<div class="course-cover">
+					<img src={cover} alt="" />
+				</div>
+			) : (
+				<hr />
+			)
+		}
 		<div class="content">
 			<slot />
 			<br />
-			<br />
-			<br />
-			<a href="/" class="brand">simple:<span>typescript</span></a>
 		</div>
+		<footer>
+			<a href="/" class="brand">simple:<span>typescript</span></a>
+		</footer>
 	</main>
 </BaseDocument>
 
@@ -33,15 +39,16 @@ const { title, description, cover } = Astro.props
 		margin-top: 30px;
 	}
 
-  h1 {
-    font-family: var(--heading-font);
-  }
+	h1 {
+		font-family: var(--heading-font);
+	}
 
 	nav {
 		padding: 20px;
 	}
 
-	a {
+	header a,
+	footer a {
 		background-color: var(--white-100);
 		padding: 10px 20px;
 		color: var(--text-color);
@@ -62,12 +69,12 @@ const { title, description, cover } = Astro.props
 		}
 	}
 
-  .course-cover {
-    margin: 30px 0;
-    border: 4px solid var(--white-100);
-    aspect-ratio: 16 / 9;
-    width: 100%;
-  }
+	.course-cover {
+		margin: 30px 0;
+		border: 4px solid var(--white-100);
+		aspect-ratio: 16 / 9;
+		width: 100%;
+	}
 
 	h2 {
 		margin: 40px 0 10px;
@@ -81,12 +88,21 @@ const { title, description, cover } = Astro.props
 
 	.content {
 		margin: 50px 0;
-		padding: 0 0 100px;
+		padding: 0 0 50px;
 		font-size: clamp(1rem, 7vw, 1.2rem);
 		line-height: 1.4;
 
 		ul {
 			padding-left: 20px;
+		}
+
+		a {
+			transition: 300ms;
+			color: var(--green);
+
+			&:hover {
+				text-decoration: underline;
+			}
 		}
 	}
 

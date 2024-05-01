@@ -14,44 +14,69 @@ const matches = [...code.matchAll(tooltip)]
 
 let match = matches[0]
 
-// for (const match of matches) {
-// 	console.log(match)
-// }
+function makeid(length: number) {
+	let result = ""
+	const characters =
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+	const charactersLength = characters.length
+	let counter = 0
+	while (counter < length) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength))
+		counter += 1
+	}
+	return result
+}
 
-// const replacer = match => {
-//   // console.log({...match})
-//   return `<span>${match}</span>`
+const id = makeid(10)
 
-// }
+const matchType = match ? match[1] : null
 
 const codeWithoutTooltips = code.replaceAll(tooltip, "")
-
-// console.log(matches)
-// console.log(match[2])
-
-const hasLang = !!lang
 ---
 
-<Prism code={codeWithoutTooltips} lang={lang} />
-{match && <span class={`tooltip ${match[1]}`}>{match[3]}</span>}
+<div id={id}>
+	<Prism code={codeWithoutTooltips} lang={lang} />
+	{match && <span class={`tooltip ${matchType}`}>{match[3]}</span>}
+</div>
 
-<style lang="scss">
-  .tooltip {
-    position: relative;
-    top: -30px;
-    left: 1.5em;
-    padding: 10px;
-    font-size: 0.8em;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-    
-    &.error {
-      background-color: #a13a2f;
-    }
-    
-    &.info {
-      background-color: #2f5da1;
+<style lang="scss" >
+	.tooltip {
+		position: relative;
+		top: -30px;
+		left: 1.5em;
+		padding: 10px;
+		font-size: 0.8em;
+		box-decoration-break: clone;
+		-webkit-box-decoration-break: clone;
 
-    }
-  }
+		&.error {
+			background-color: #a13a2f;
+		}
+
+		&.info {
+			background-color: #2f5da1;
+		}
+	}
 </style>
+
+<script define:vars={{ id, matchType }}>
+	const block = document.getElementById(id)
+
+	if (block) {
+		const matchRegex =
+			/<span class="token comment">\/\*\*\/<\/span>(.*)<span class="token comment">\/\*\*\/<\/span>/g
+
+		function replaceMatch(match) {
+      const withoutPrefixComments = match.replaceAll("/**/", "")
+			const withoutSpans = withoutPrefixComments
+      .replace("</span>", "")
+      .replace('<span class="token comment">', "")
+
+			return `<span class='token-${matchType}'>${withoutSpans.trim()}</span>`
+		}
+
+		const replaced = block.innerHTML.replace(matchRegex, replaceMatch)
+    console.log(replaced)
+		block.innerHTML = replaced
+	}
+</script>

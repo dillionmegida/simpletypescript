@@ -36,7 +36,7 @@ The problem with this is that, **it is not safe**. TypeScript is supposed to hel
   code={`let variable: string = "hello"
 
 // ts-error **push** Property 'push' does not exist on type 'string'
-variable.push(5, 6)`}
+variable./**/push/**/(5, 6)`}
   lang="ts"
 />
 
@@ -73,14 +73,14 @@ Here, `variable` is of `any`. But it actually holds an array, and arrays do not 
   code={`let variable: unknown = [1, 2]
 
 // ts-error **variable** 'variable' is of type 'unknown'
-variable.startsWith()`}
+/**/variable/**/.startsWith()`}
   lang="ts"
 />
 
 What you see here is TypeScript complaining. TypeScript is like "well, you just told me that you do 'not know' the type for this variable, so I cannot guarantee you that this variable has the `startsWith` method".
 
 So what if you wanted to use the `startsWith` method? Then you have to "tell" TypeScript that this is a string. How? **Type Guards**:
-
+o
 ```ts
 let variable: unknown = [1, 2]
 

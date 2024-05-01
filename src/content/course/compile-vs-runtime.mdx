@@ -75,7 +75,7 @@ Here, we are saying `value` should be of a `string` or `number` type. But if you
 
 <CodeBlock
   code={`let value: string | number = "hello"
-value = true
+/**/value/**/ = true
 // ts-error **value** Type 'boolean' is not assignable to type 'string | number'`}
   lang="ts"
 />
@@ -99,7 +99,7 @@ This function takes a string--the TypeScript code--then it finds the type errors
 
 <CodeBlock
   code={`let value: string | number = "hello"
-value = true
+/**/value/**/ = true
 // ts-error **value** Type 'boolean' is not assignable to type 'string | number'`}
   lang="ts"
 />
@@ -119,7 +119,7 @@ Now that we have clarified that TypeScript "scans" your code, but doesn't "execu
 
 <CodeBlock
   code={`let value: string | number = "hello"
-value = true
+/**/value/**/ = true
 // ts-error **value** Type 'boolean' is not assignable to type 'string | number'`}
   lang="ts"
 />
@@ -141,7 +141,7 @@ Here we have a `getData` function and we tell TypeScript that this function retu
   code={`function getData(): number {
   let data = ""
 // ts-error **return** Type 'string' is not assignable to type 'number'
-  return data
+  /**/return/**/ data
 }`}
   lang="ts"
 />
