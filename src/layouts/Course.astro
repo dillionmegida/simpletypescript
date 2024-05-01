@@ -4,10 +4,10 @@ import type { Tip, TipFrontmatter } from "../types/Tip"
 
 type Props = TipFrontmatter
 
-const { title, description } = Astro.props
+const { title, description, cover } = Astro.props
 ---
 
-<BaseDocument description={description} title={title}>
+<BaseDocument image={cover} description={description} title={title}>
 	<header class="container">
 		<nav>
 			<a href="/" class="brand">simple:<span>typescript</span></a>
@@ -15,7 +15,9 @@ const { title, description } = Astro.props
 	</header>
 	<main class="container padding">
 		<h1>{title}</h1>
-		<hr />
+		<div class="course-cover">
+			<img src={cover} alt="" />
+		</div>
 		<div class="content">
 			<slot />
 			<br />
@@ -31,9 +33,9 @@ const { title, description } = Astro.props
 		margin-top: 30px;
 	}
 
-	h1 {
-		font-family: var(--heading-font);
-	}
+  h1 {
+    font-family: var(--heading-font);
+  }
 
 	nav {
 		padding: 20px;
@@ -60,6 +62,17 @@ const { title, description } = Astro.props
 		}
 	}
 
+  .course-cover {
+    margin: 30px 0;
+    border: 4px solid var(--white-100);
+    aspect-ratio: 16 / 9;
+    width: 100%;
+  }
+
+	h2 {
+		margin: 40px 0 10px;
+	}
+
 	hr {
 		border-color: var(--white-200);
 		margin: 50px 0;
@@ -69,8 +82,12 @@ const { title, description } = Astro.props
 	.content {
 		margin: 50px 0;
 		padding: 0 0 100px;
-		font-size: clamp(1rem, 7vw, 1.3rem);
+		font-size: clamp(1rem, 7vw, 1.2rem);
 		line-height: 1.4;
+
+		ul {
+			padding-left: 20px;
+		}
 	}
 
 	pre[class] {

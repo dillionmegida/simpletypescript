@@ -1,0 +1,22 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content"
+import Course from "../../layouts/Course.astro"
+import type { Tip } from "../../types/Tip"
+
+export async function getStaticPaths() {
+	const tips: Tip[] = await getCollection("course")
+	return tips.map(tip => ({
+		params: { slug: tip.slug },
+		props: tip,
+	}))
+}
+type Props = CollectionEntry<"course">
+
+const demo = Astro.props
+const { Content } = await demo.render()
+---
+
+<Course {...demo.data}>
+	<Content />
+	<hr />
+</Course>

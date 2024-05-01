@@ -1,0 +1,153 @@
+---
+title: "Compile Time vs Runtime for TypeScript"
+description: "What makes TypeScript a 'compile time thing'?"
+pubDate: "May 01 2024"
+cover: "/course/compile-time-runtime.png"
+---
+
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+import JsTsEditor from "../../components/mdx/JsTsEditor.astro"
+import Info from "../../components/mdx/Info.astro"
+
+TypeScript is a **Static Type-Checker**. What does this mean?
+
+The first step to understanding TypeScript is to understand the difference between compile and runtime. And also what makes TypeScript a "compile time thing".
+
+## When is compile time?
+
+```ts
+let value: string | number = "hello"
+```
+
+This is an example of a TypeScript code. The `: string | number` is the TypeScript part. Don't worry about syntax for now. The JavaScript part is:
+
+```js
+let value = "hello"
+```
+
+This is normal JavaScript, and this is what runtime environments like browsers will run. The browser doesn't run TypeScript code. And this is where **compilation** comes in.
+
+The TypeScript compiler would take your TypeScript code, and "convert" it into JavaScript which can then be interpreted by runtime environments. So all the type checks provided by TypeScript, would happen during that convertion.
+
+
+<JsTsEditor code1={`let value:
+  string | number
+  = "hello"`} code2={`let value
+  = "hello"`} />
+
+## When is runtime?
+
+Runtime happens when the JavaScript code is being executed:
+
+```js
+let value = "hello"
+
+function something() {
+  //
+}
+
+something()
+```
+
+Runtime happens when the `let value = "hello"` operation runs, when `something` is defined, and when `something()` is run.
+
+`something()` will not be executed during compile time. It will be executed when JavaScript is "running".
+
+Why does "compile vs runtime" matter to TypeScript?
+
+## Static Typing
+
+TypeScript is a **static type tool**. Static typing means that type checks happen during compile time. And since it is happening during compile time, it means type checking only works for static values.
+
+A good way to look at TypeScript is that TypeScript code is like a draft representation of the expectations of your code:
+
+- this should return a string
+- this variable should be of this type
+- a different type shouldn't be passed as an argument
+
+For example:
+
+```ts
+let value: string | number = "hello"
+```
+
+Here, we are saying `value` should be of a `string` or `number` type. But if you pass a value of a different type, TypeScript will complain:
+
+<CodeBlock
+  code={`let value: string | number = "hello"
+value = true
+// ts-error **value** Type 'boolean' is not assignable to type 'string | number'`}
+  lang="ts"
+/>
+
+This error got triggered by TypeScript was "converting" the TypeScript code to this:
+
+```js
+let value = "hello"
+value = true
+```
+
+TypeScript did not run the assignment operation. It did not save `value` anywhere in memory with a value of "hello". It also did not execute `value = true`. Think of TypeScript as a `checkForTypeErrors` function:
+
+```js
+function checkForTypeErrors(typeScriptCode) {
+  // check for errors
+}
+```
+
+This function takes a string--the TypeScript code--then it finds the type errors. If this function comes across `something()`, it will not execute it. If it comes across `value = true`, it will not execute it. Coming back to this code:
+
+<CodeBlock
+  code={`let value: string | number = "hello"
+value = true
+// ts-error **value** Type 'boolean' is not assignable to type 'string | number'`}
+  lang="ts"
+/>
+
+Here, you say `value` should be a `string` or a `number`. In `checkForTypeErrors`, TypeScript sort of "memorizes" that `value` should only ever have a `string` or `number` type.
+
+If TypeScript sees `value = "something"`, it doesn't say anything. If it sees `value = 100`, it doesn't say anything. But when it sees `value = true`, then it throws an error saying "I remember that this should have have a string or number value".
+
+<Info>
+  But very important, TypeScript does not run the code. It only "scans" through
+  the code. Then it compiles it to the JavaScript version.
+</Info>
+
+## You help TypeSript help you
+
+Now that we have clarified that TypeScript "scans" your code, but doesn't "execute" it, we can now come to understand that TypeScript uses the information you provide to help you.
+
+<CodeBlock
+  code={`let value: string | number = "hello"
+value = true
+// ts-error **value** Type 'boolean' is not assignable to type 'string | number'`}
+  lang="ts"
+/>
+
+Here, you tell TypeScript `value` should be `string` or `number`. When you assign a boolean, TypeScript sees that those types don't match. Again, TypeScript is using the information you provide to help you.
+
+But take a look at this example:
+
+```ts
+function getData(): number {
+  let data // fetch api that returns a string
+  return data
+}
+```
+
+Here we have a `getData` function and we tell TypeScript that this function returns a number `: number`. Let's assume that this function, when called, makes an API request that returns a string. In this case, TypeScript does not know what the API actually returns, because **it did not run it**, so TypeScript will believe you that it returns a number.
+
+<CodeBlock
+  code={`function getData(): number {
+  let data = ""
+// ts-error **return** Type 'string' is not assignable to type 'number'
+  return data
+}`}
+  lang="ts"
+/>
+
+In this case, TypeScript "clearly knows that `data` is a string and not a number", so it throws an error.
+
+---
+
+Understanding compile and runtime is very important because TypeScript's "help" happens at compile time. TypeScript cannot use any information that can only be gotten at runtime--for example getting data from local storage, calling an API and so on.

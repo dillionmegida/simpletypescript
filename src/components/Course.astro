@@ -1,0 +1,74 @@
+---
+import { getCollection } from "astro:content"
+import type { Lesson } from "../types/Course"
+import Link from "./Link.astro"
+import { getFullPath } from "../helpers/path"
+import { addEllipsis } from "../helpers/string"
+
+const lessons: Lesson[] = await getCollection("course")
+---
+
+<hr />
+<section class="lessons-section">
+	<h2>Working on a course...</h2>
+	<div class="lessons">
+		{
+			lessons.map(lesson => {
+				const path = getFullPath("course", lesson.slug)
+
+				return (
+					<Link href={path} className="lesson">
+						<span class="title">{lesson.data.title}</span>
+						<hr />
+						<p class="description">{addEllipsis(lesson.data.description)}</p>
+					</Link>
+				)
+			})
+		}
+	</div>
+</section>
+
+<style is:global lang="scss">
+	.lessons-section {
+		margin: 40px 0;
+	}
+
+	hr {
+		border-color: var(--white-200);
+		margin: 50px 0;
+		width: 40%;
+	}
+
+	.lessons {
+		padding: 20px 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 20px;
+
+		.lesson {
+			border: 1px solid var(--white-200);
+			padding: 20px;
+			color: var(--text-color);
+			transition: 300ms;
+
+			&:hover {
+				background-color: var(--white-100);
+			}
+
+			.title {
+				font-size: 1.4em;
+				font-weight: bold;
+			}
+
+			hr {
+				border-color: var(--white-200);
+				width: 20%;
+				margin: 10px 0 20px;
+			}
+
+			.description {
+				font-size: 0.9em;
+			}
+		}
+	}
+</style>

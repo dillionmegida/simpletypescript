@@ -1,10 +1,10 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content"
-import Demo from "../../layouts/Tip.astro"
-import type { Tip } from "../../types/Tip"
+import Tip from "../../layouts/Tip.astro"
+import type { Tip as TipType } from "../../types/Tip"
 
 export async function getStaticPaths() {
-	const tips: Tip[] = await getCollection("tip")
+	const tips: TipType[] = await getCollection("tip")
 	return tips.map(tip => ({
 		params: { slug: tip.slug },
 		props: tip,
@@ -12,10 +12,10 @@ export async function getStaticPaths() {
 }
 type Props = CollectionEntry<"tip">
 
-const demo = Astro.props
-const { Content } = await demo.render()
+const tip = Astro.props
+const { Content } = await tip.render()
 ---
 
-<Demo {...demo.data}>
+<Tip {...tip.data}>
 	<Content />
-</Demo>
+</Tip>
