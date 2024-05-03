@@ -4,6 +4,7 @@ import partytown from "@astrojs/partytown"
 import sitemap from "@astrojs/sitemap"
 
 export default defineConfig({
+  prefetch: true,
   site: "https://simpletypescript.dev",
   markdown: {
     syntaxHighlight: "prism",

@@ -1,6 +1,6 @@
 ---
 title: "Compile Time vs Runtime for TypeScript"
-description: "What makes TypeScript a 'compile time thing'?"
+description: "What does it mean for TypeScript to be a Static Typing Tool? What makes TypeScript a 'compile time thing'? We'll learn that with examples in this lesson."
 pubDate: "May 01 2024"
 cover: "/course/compile-time-runtime.png"
 ---
@@ -27,7 +27,13 @@ let value = "hello"
 
 This is normal JavaScript, and this is what runtime environments like browsers will run. The browser doesn't run TypeScript code. And this is where **compilation** comes in.
 
-The TypeScript compiler would take your TypeScript code, and "convert" it into JavaScript which can then be interpreted by runtime environments. So all the type checks provided by TypeScript, would happen during that convertion.
+The TypeScript compiler would take your TypeScript code, and "convert" it into JavaScript which can then be interpreted by runtime environments.
+
+<Info>
+Runtime environments might till have to compile the JavaScript to machine code before executing it.
+</Info>
+
+So all the type checks provided by TypeScript, would happen during the "convertion" from TypeScript to JavaScript:
 
 
 <JsTsEditor code1={`let value:

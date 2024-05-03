@@ -1,0 +1,80 @@
+---
+const links = [
+	{ path: "#", label: "Tips" },
+	{ path: "#", label: "Course" },
+]
+
+const pathname = new URL(Astro.request.url).pathname
+---
+
+<header>
+	<div class="container padding">
+		<nav>
+			<a href="/" class="brand">simple:<span>typescript</span></a>
+			<div class="other-links">
+				{
+					links.map(link => (
+						<a
+							class={pathname.startsWith(link.path) ? "active" : ""}
+							href={link.path}
+						>
+							{link.label}
+						</a>
+					))
+				}
+			</div>
+		</nav>
+	</div>
+</header>
+
+<style lang="scss">
+	header {
+    background-color: color-mix(in srgb, var(--primary-color), white 10%);
+    border-bottom: 4px solid var(--white-100);
+
+    .padding {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    
+		nav {
+      display: flex;
+			gap: 30px;
+      padding: 20px 0;
+			align-items: center;
+		}
+    
+		.brand {
+			background-color: var(--white-100);
+			border: 2px solid var(--white-200);
+			padding: 10px 20px;
+			color: var(--text-color);
+			transition: background-color 300ms;
+			// font-size: 1.3em;
+			border-radius: 3px;
+
+			span {
+				color: var(--yellow);
+				margin-left: 5px;
+			}
+
+			&:hover {
+				background-color: var(--white-200);
+			}
+		}
+
+		nav .other-links {
+			display: flex;
+			gap: 20px;
+
+			a {
+				color: var(--text-color);
+				transition: color 300ms;
+
+				&:hover, &.active {
+					color: var(--yellow);
+				}
+			}
+		}
+	}
+</style>
