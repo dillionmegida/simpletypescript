@@ -1,0 +1,106 @@
+---
+title: "Use literal types to narrow your types"
+description: "keyof typeof allows you to easily create a type from the properites in an existing object"
+pubDate: "Apr 30 2024"
+heroImage: "/demos/easy-grid.png"
+---
+
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+
+Take a look at this code:
+
+```ts
+// path: className pair
+const obj: Record<string, string> = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+function getClassName(key: string) {
+  return obj[key]
+}
+```
+
+We have `obj` which has paths as the keys, and background classes as the values. Then we have a `key` parameter which we have typed to `string`. While this is fine, you can improve this by using a [literal type]() instead. Here's why:
+
+```ts
+// path: className pair
+const obj: Record<string, string> = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+// in some other file
+function getClassName(key: string) {
+  return obj[key]
+}
+
+getClassName('/products') // undefined
+```
+
+In the case that you access a key that doesn't exist, you would get `undefined`. `/products` is a string, so TypeScript doesn't complain. TypeScript will only complain when you use a key that isn't a string:
+
+<CodeBlock
+  code={`const obj: Record<string, string> = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+// in some other file
+function getClassName(key: string) {
+  return obj[key]
+}
+
+getClassName(/**/400/**/)
+// ts-error **400** Argument of type 'number' is not assignable to parameter of type 'string'`}
+  lang="ts"
+/>
+
+Instead of using `key: string`, which allows for **different forms of strings**, you can narrow the accepted strings with literal types:
+
+<CodeBlock
+  code={`// path: className pair
+const obj: Record<string, string> = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+type Path = '/about' | '/contact' | '/services'
+
+function getClassName(key: Path) {
+  return obj[key]
+}
+
+getClassName(/**/'/products'/**/)
+// ts-error **'/products'** Argument of type '"/products"' is not assignable to parameter of type 'Path'`}
+  lang="ts"
+/>
+
+Here, we have a [union](#) of a literal type for `Path` which means `"/about"` or `"/contact"` or `"/services"`. Now when you provide `"/products"` as the key, even though it is still a string like the others, we get an error.
+
+But everything works fine when you pass the expected key:
+
+```ts
+// path: className pair
+const obj: Record<string, string> = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+type Path = '/about' | '/contact' | '/services'
+
+function getClassName(key: Path) {
+  return obj[key]
+}
+
+getClassName('/about')
+```
+
+---
+
+Although this works fine, you can improve it even further. Check out my [keyof typeof magic tip](/tips/keyof-typeof-magic).

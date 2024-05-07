@@ -1,0 +1,25 @@
+---
+import type { ErrorFrontmatter } from "../types/Error"
+import Content from "./Content.astro"
+
+type Props = ErrorFrontmatter
+
+const { title, description } = Astro.props
+
+const breadcrumbs = [
+	{
+		path: "/",
+		label: "Home",
+	},
+	{
+		path: "/errors",
+		label: "Errors",
+	},
+]
+---
+
+<Content breadcrumbs={breadcrumbs} title={title} description={description}>
+	<div slot="content">
+		<slot />
+	</div>
+</Content>

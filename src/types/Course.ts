@@ -1,4 +1,6 @@
-export type RootPath = "tips" | "course"
+import type { LINKS } from "../constants";
+
+export type RootPath = keyof typeof LINKS.pagePaths
 
 export type Lesson = {
 	id: string;

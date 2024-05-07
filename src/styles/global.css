@@ -1,10 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:ital,wght@0,100..900;1,100..900&family=Indie+Flower&family=Righteous&display=swap");
 
 :root {
-  --primary-color: #270b16;
+  --primary-color: #160f04;
 
   --tips-color: #14071f;
   --course-color: #041311;
+  --errors-color: #1e0404;
 
   --blue: rgb(41, 151, 246);
   --yellow: rgb(246, 243, 41);
@@ -37,6 +38,9 @@ html.tips {
 
 html.course {
   --main-color: var(--course-color);
+}
+html.errors {
+  --main-color: var(--errors-color);
 }
 
 body {

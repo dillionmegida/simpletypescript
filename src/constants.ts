@@ -6,8 +6,11 @@ export const SITE = {
 }
 
 export const LINKS = {
-  tips: '/tips',
-  course: '/course',
+  pagePaths: {
+    tips: "/tips",
+    course: "/course",
+    errors: "/errors",
+  } as const,
 
   twitter: {
     link: "https://twitter.com/iamdillion",

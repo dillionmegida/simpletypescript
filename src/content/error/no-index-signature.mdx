@@ -1,0 +1,154 @@
+---
+title: "No Index Signature - Expression cannot be used to index type"
+description: "What does this error mean, and how can I solve it?"
+pubDate: "May 07 2024"
+---
+
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+import JsTsEditor from "../../components/mdx/JsTsEditor.astro"
+import Info from "../../components/mdx/Info.astro"
+
+Here is an example where such errors can occur:
+
+<CodeBlock code={`const obj = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+function getClassName(key: string) {
+  return /**/obj[key]/**/
+// ts-error **obj[key]** Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ '/about': string; '/contact': string; '/services': string; }'...No index signature with a parameter of type 'string' was found on type '{ '/about': string; '/contact': string; '/services': string; }'
+}
+`} lang='ts' />
+
+
+
+What is happening here? Let me explain.
+
+TypeScript inferred the type `obj` to be this:
+
+```ts
+const obj: {
+  '/about': string;
+  '/contact': string;
+  '/services': string;
+}
+```
+
+Implicitly, it means the keys you can use with this object has this union literal type:
+
+```ts
+'/about' | '/contact' | '/services'
+```
+
+So, you can access the properties in this object only those strings:
+
+```ts
+const obj: {
+  '/about': string;
+  '/contact': string;
+  '/services': string;
+}
+
+obj['/about'] // fine
+obj['/services'] // fine
+
+const variable = "/contact"
+obj[variable] // fine
+```
+
+But any other string, does not fall in the union:
+
+<CodeBlock code={`const obj: {
+  '/about': string;
+  '/contact': string;
+  '/services': string;
+}
+
+obj['/about'] // fine
+obj['/services'] // fine
+
+const variable = "/contacts"
+obj/**/[variable]/**/
+// ts-error **variable** Property '/contacts' does not exist on type '{ '/about': string; '/contact': string; '/services': string; }'
+`} lang='ts' />
+
+<CodeBlock code={`/**/obj["/sss"]/**/
+// ts-error **obj["/sss"]** Element implicitly has an 'any' type because expression of type '"/sss"' can't be used to index type '{ '/about': string; '/contact': string; '/services': string; }'.,,Property '/sss' does not exist on type '{ '/about': string; '/contact': string; '/services': string; }'
+`} lang='ts' />
+
+## Solution
+
+The solution here is to provide a string that falls into the union. Back to our function above:
+
+```ts
+const obj = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+function getClassName(key: string) {
+  return obj[key]
+}
+```
+
+Instead of defining the `key` parameter as `string`, we need to pass a type that falls in the keys. You can do this manually like this:
+
+```ts
+const obj = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+type Path = '/about' | '/contact' | '/services'
+
+function getClassName(key: Path) {
+  return obj[key]
+}
+```
+
+Here, `key` isn't just "any string", but a string that falls in the object's keys.
+
+But here, you are repeating yourself. If you add a new property, you also need to add that to `Path`:
+
+```ts
+const obj = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow',
+  '/products': 'bg-green'
+}
+
+type Path = '/about' | '/contact' | '/services' | 'products'
+```
+
+Instead, you can do this:
+
+```ts
+const obj = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+type Path = keyof typeof obj
+
+function getClassName(key: Path) {
+  return obj[key]
+}
+```
+
+<CodeBlock code={`const obj = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+type /**/Path/**/ = keyof typeof obj
+// ts-info **Path** "/about" | "/contact" | "/services"
+`} lang='ts' />
+
+Now, if you add more properties to `obj`, the keys will be available as union in `Path`. You can learn more about this my [keyof typeof magic tip](/tips/keyof-typeof-magic).

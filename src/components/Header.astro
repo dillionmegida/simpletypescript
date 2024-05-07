@@ -2,8 +2,9 @@
 import { LINKS } from "../constants"
 
 const links = [
-	{ path: LINKS.tips, label: "Tips" },
-	{ path: LINKS.course, label: "Course" },
+	{ path: LINKS.pagePaths.tips, label: "Tips" },
+	{ path: LINKS.pagePaths.course, label: "Course" },
+	{ path: LINKS.pagePaths.errors, label: "Errors" },
 ]
 
 const pathname = new URL(Astro.request.url).pathname

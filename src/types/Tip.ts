@@ -9,3 +9,11 @@ export type TipFrontmatter = {
   description: string
   cover?: string
 }
+
+const obj = {
+  '/about': 'bg-orange',
+  '/contact': 'bg-purple',
+  '/services': 'bg-yellow'
+}
+
+type /**/Path/**/ = keyof typeof obj

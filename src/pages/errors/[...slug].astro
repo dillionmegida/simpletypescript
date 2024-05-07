@@ -1,0 +1,21 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content"
+import type { Error as ErrorType } from "../../types/Error"
+import Error from "../../layouts/Error.astro"
+
+export async function getStaticPaths() {
+	const errors: ErrorType[] = await getCollection("error")
+	return errors.map(error => ({
+		params: { slug: error.slug },
+		props: error,
+	}))
+}
+type Props = CollectionEntry<"error">
+
+const error = Astro.props
+const { Content } = await error.render()
+---
+
+<Error {...error.data}>
+	<Content />
+</Error>
