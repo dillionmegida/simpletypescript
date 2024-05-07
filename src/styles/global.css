@@ -3,9 +3,8 @@
 :root {
   --primary-color: #270b16;
 
-  --text-color: #c9c7c7;
-  --white-100: #371826;
-  --white-200: #704b5a;
+  --tips-color: #14071f;
+  --course-color: #041311;
 
   --blue: rgb(41, 151, 246);
   --yellow: rgb(246, 243, 41);
@@ -24,7 +23,20 @@
 
 html {
   font-family: var(--text-font);
-  background: var(--primary-color);
+  --main-color: var(--primary-color);
+  --text-color: #c9c7c7;
+  --white-100: color-mix(in srgb, var(--main-color), white 10%);
+  --white-200: color-mix(in srgb, var(--main-color), white 20%);
+  --black-800: color-mix(in srgb, var(--main-color), black 80%);
+  background: var(--main-color);
+}
+
+html.tips {
+  --main-color: var(--tips-color);
+}
+
+html.course {
+  --main-color: var(--course-color);
 }
 
 body {

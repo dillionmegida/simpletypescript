@@ -14,8 +14,8 @@ type Props = {
 const { title, description, cover, breadcrumbs } = Astro.props
 ---
 
-<Layout>
-	<BaseDocument image={cover} description={description} title={title}>
+<BaseDocument image={cover} description={description} title={title}>
+	<Layout>
 		<main>
 			<div class={`course-info ${cover && "has-cover"}`}>
 				<div class="container padding">
@@ -31,16 +31,19 @@ const { title, description, cover, breadcrumbs } = Astro.props
 					}
 				</div>
 			</div>
-			<div class="content container padding">
-				<slot />
+			<div class="container padding">
+				<div class="content">
+					<slot name="content" />
+				</div>
+				<slot name="parent" />
 				<br />
 			</div>
 			<footer class="text-center mt-20 text-white text-opacity-50 py-20">
 				<a href="/" class="brand">simple:<span>typescript</span></a>
 			</footer>
 		</main>
-	</BaseDocument>
-</Layout>
+	</Layout>
+</BaseDocument>
 
 <style is:global lang="scss">
 	.course-info {
@@ -52,7 +55,7 @@ const { title, description, cover, breadcrumbs } = Astro.props
 			z-index: -1;
 			position: absolute;
 			inset: 0;
-			background-color: color-mix(in srgb, var(--primary-color), white 3%);
+			background-color: color-mix(in srgb, var(--main-color), white 5%);
 		}
 
 		.description {
@@ -97,7 +100,7 @@ const { title, description, cover, breadcrumbs } = Astro.props
 	.content {
 		margin: 0 auto 50px;
 		padding: 0 0 50px;
-		font-size: clamp(1rem, 7vw, 1.2rem);
+		font-size: clamp(1rem, 7vw, 1.4rem);
 
 		ul {
 			padding-left: 20px;
@@ -123,7 +126,7 @@ const { title, description, cover, breadcrumbs } = Astro.props
 	}
 
 	code:not([class]) {
-		background-color: color-mix(in srgb, var(--primary-color), black 30%);
+		background-color: color-mix(in srgb, var(--main-color), black 80%);
 		padding: 3px;
 		font-size: 0.9em;
 	}

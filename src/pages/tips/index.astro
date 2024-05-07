@@ -9,24 +9,27 @@ import type { Tip } from "../../types/Tip"
 const tips: Tip[] = await getCollection("tip")
 ---
 
-<Content breadcrumbs={[]} title="TypeScript Tips" description="">
-	<BaseDocument title="Simple TypeScript Course" description="">
-		<p class="mt-4 text-xl">Improve your TypeScript game with these tips</p>
-		<div class="mt-8">
-			{
-				tips.map(tip => {
-					const path = getFullPath("tips", tip.slug)
+<BaseDocument title="Simple TypeScript Course" description="">
+	<Content breadcrumbs={[]} title="TypeScript Tips" description="">
+		<div slot="parent">
+			<p class="mt-4 text-xl">Write better TypeScript code with these tips ✨</p>
+			<div class="mt-8">
+				{
+					tips.map(tip => {
+						const path = getFullPath("tips", tip.slug)
 
-					return (
-						<Link
-							href={path}
-							className="p-4 block bg-white bg-opacity-10 rounded-sm mb-3 hover:bg-primary border-2 hover:text-yellow border-white border-opacity-10 transition-colors"
-						>
-							{tip.data.title}
-						</Link>
-					)
-				})
-			}
+						return (
+							<Link
+								href={path}
+								className="px-4 py-6 block group bg-white bg-opacity-10 rounded-sm mb-3 hover:bg-main border-2  border-white border-opacity-10 transition-colors"
+							>
+								<span class="group-hover:text-yellow text-xl font-bold block border-b-white border-b border-opacity-10 pb-4">{tip.data.title}</span>
+								<p class="m-0 mt-4">{tip.data.description}</p>
+							</Link>
+						)
+					})
+				}
+			</div>
 		</div>
-	</BaseDocument>
-</Content>
+	</Content>
+</BaseDocument>

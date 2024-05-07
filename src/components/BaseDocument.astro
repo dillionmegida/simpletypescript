@@ -1,6 +1,7 @@
 ---
 import { SITE } from "../constants"
 import BaseHead from "./BaseHead.astro"
+import { ViewTransitions } from 'astro:transitions';
 
 type Props = {
 	title: string
@@ -9,13 +10,25 @@ type Props = {
 }
 
 const { title, description, image } = Astro.props
+
+type Page = "/tips" | "/course"
+
+const pathname = new URL(Astro.request.url).pathname
+const prefixPathname = pathname.match(/\/[^\/]+/) as unknown as Page
+
+const pageClass: { [x in Page]: string } = {
+	"/tips": "tips",
+	"/course": "course",
+}
+
 ---
 
 <!doctype html>
-<html lang="en">
+<html class={pageClass[prefixPathname]} lang="en">
 	<head>
 		<BaseHead title={title} description={description} image={image} />
 		<link href="../styles/prism.css" rel="stylesheet" />
+    <ViewTransitions />
 	</head>
 
 	<body>

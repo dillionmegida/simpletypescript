@@ -19,5 +19,7 @@ const breadcrumbs = [
 ---
 
 <Content breadcrumbs={breadcrumbs} title={title} description={description}>
-	<slot />
+	<div slot="content">
+		<slot />
+	</div>
 </Content>

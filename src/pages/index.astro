@@ -8,11 +8,11 @@ import { LINKS } from "../constants"
 import Layout from "../layouts/Layout.astro"
 ---
 
-<Layout>
-	<BaseDocument
-		title="Simple TypeScript"
-		description="Simplified resources on TypeScript from tips to courses to solutions from beginner to advanced"
-	>
+<BaseDocument
+	title="Simple TypeScript"
+	description="Simplified resources on TypeScript from tips to courses to solutions from beginner to advanced"
+>
+	<Layout>
 		<main class="container padding">
 			<h1 class="main-title">simple:<span>typescript</span></h1>
 			<p class="tagline">
@@ -29,8 +29,8 @@ import Layout from "../layouts/Layout.astro"
 			<Tips />
 			<Course />
 		</main>
-	</BaseDocument>
-</Layout>
+	</Layout>
+</BaseDocument>
 
 <style is:global lang="scss">
 	main {
