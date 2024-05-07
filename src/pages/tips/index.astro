@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content"
+import BaseDocument from "../../components/BaseDocument.astro"
+import { getFullPath } from "../../helpers/path"
+import Link from "../../components/Link.astro"
+import Content from "../../layouts/Content.astro"
+import type { Tip } from "../../types/Tip"
+
+const tips: Tip[] = await getCollection("tip")
+---
+
+<Content breadcrumbs={[]} title="TypeScript Tips" description="">
+	<BaseDocument title="Simple TypeScript Course" description="">
+		<p class="mt-4 text-xl">Improve your TypeScript game with these tips</p>
+		<div class="mt-8">
+			{
+				tips.map(tip => {
+					const path = getFullPath("tips", tip.slug)
+
+					return (
+						<Link
+							href={path}
+							className="p-4 block bg-white bg-opacity-10 rounded-sm mb-3 hover:bg-primary border-2 hover:text-yellow border-white border-opacity-10 transition-colors"
+						>
+							{tip.data.title}
+						</Link>
+					)
+				})
+			}
+		</div>
+	</BaseDocument>
+</Content>

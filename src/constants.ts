@@ -6,6 +6,9 @@ export const SITE = {
 }
 
 export const LINKS = {
+  tips: '/tips',
+  course: '/course',
+
   twitter: {
     link: "https://twitter.com/iamdillion",
     username: "iamdillion",
