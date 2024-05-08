@@ -19,7 +19,7 @@ const tips: Tip[] = await getCollection("tip")
 					<Link href={path} className="tip">
 						<span class="title">{tip.data.title}</span>
 						<hr />
-						<p class="description">{addEllipsis(tip.data.description)}</p>
+						{/* <p class="description">{addEllipsis(tip.data.description)}</p> */}
 					</Link>
 				)
 			})

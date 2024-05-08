@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content"
 import type { Lesson } from "../types/Course"
 import Link from "./Link.astro"
-import { getFullPath } from "../helpers/path"
+import { getFullPath, removeNumberPrefix } from "../helpers/path"
 import { addEllipsis } from "../helpers/string"
 
 const lessons: Lesson[] = await getCollection("course")
@@ -14,7 +14,7 @@ const lessons: Lesson[] = await getCollection("course")
 	<div class="lessons">
 		{
 			lessons.map(lesson => {
-				const path = getFullPath("course", lesson.slug)
+				const path = getFullPath("course", removeNumberPrefix(lesson.slug))
 
 				return (
 					<Link href={path} className="lesson">
@@ -23,7 +23,7 @@ const lessons: Lesson[] = await getCollection("course")
 						</div>
 						{/* <span class="title">{lesson.data.title}</span>
 						<hr /> */}
-						<p class="description">{addEllipsis(lesson.data.description)}</p>
+						{/* <p class="description">{addEllipsis(lesson.data.description)}</p> */}
 					</Link>
 				)
 			})
@@ -70,7 +70,7 @@ const lessons: Lesson[] = await getCollection("course")
 
 			.description {
 				font-size: 0.9em;
-        padding: 20px;
+				padding: 20px;
 			}
 		}
 	}

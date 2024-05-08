@@ -4,9 +4,10 @@ import { Prism } from "@astrojs/prism"
 type Props = {
 	code: string
 	lang: string
+	filename?: string
 }
 
-const { code, lang } = Astro.props
+const { code, lang, filename = null } = Astro.props
 
 const tooltip = /\n\/\/\sts-(error|info)\s\*\*([^*]*)\*\*\s([^\n]*)/g
 
@@ -34,12 +35,27 @@ const matchType = match ? match[1] : null
 const codeWithoutTooltips = code.replaceAll(tooltip, "")
 ---
 
-<div id={id}>
+<div class="code-wrapper" id={id}>
+	{filename && <span class="filename">{filename}</span>}
 	<Prism code={codeWithoutTooltips} lang={lang} />
 	{match && <span class={`tooltip ${matchType}`}>{match[3]}</span>}
 </div>
 
-<style lang="scss" >
+<style lang="scss">
+	.code-wrapper {
+		position: relative;
+
+		.filename {
+			position: absolute;
+			top: -15px;
+			left: 20px;
+			background-color: var(--main-color);
+			padding: 5px 10px;
+			font-size: 0.7em;
+      border: 2px solid var(--white-100);
+		}
+	}
+
 	.tooltip {
 		position: relative;
 		top: -30px;
@@ -67,10 +83,10 @@ const codeWithoutTooltips = code.replaceAll(tooltip, "")
 			/<span class="token comment">\/\*\*\/<\/span>(.*)<span class="token comment">\/\*\*\/<\/span>/g
 
 		function replaceMatch(match) {
-      const withoutPrefixComments = match.replaceAll("/**/", "")
+			const withoutPrefixComments = match.replaceAll("/**/", "")
 			const withoutSpans = withoutPrefixComments
-      .replace("</span>", "")
-      .replace('<span class="token comment">', "")
+				.replace("</span>", "")
+				.replace('<span class="token comment">', "")
 
 			return `<span class='token-${matchType}'>${withoutSpans.trim()}</span>`
 		}

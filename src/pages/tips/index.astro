@@ -10,26 +10,29 @@ const tips: Tip[] = await getCollection("tip")
 ---
 
 <BaseDocument title="Simple TypeScript Course" description="">
-	<Content breadcrumbs={[]} title="TypeScript Tips" description="">
+	<Content
+		breadcrumbs={[]}
+		title="TypeScript Tips"
+		description="Write better TypeScript code with these tips ✨"
+	>
 		<div slot="parent">
-			<p class="mt-4 text-xl">Write better TypeScript code with these tips ✨</p>
-			<div class="mt-8">
-				{
-					tips.map(tip => {
-						const path = getFullPath("tips", tip.slug)
+			{
+				tips.map(tip => {
+					const path = getFullPath("tips", tip.slug)
 
-						return (
-							<Link
-								href={path}
-								className="px-4 py-6 block group bg-white bg-opacity-10 rounded-sm mb-3 hover:bg-main border-2  border-white border-opacity-10 transition-colors"
-							>
-								<span class="group-hover:text-yellow text-xl font-bold block border-b-white border-b border-opacity-10 pb-4">{tip.data.title}</span>
-								<p class="m-0 mt-4">{tip.data.description}</p>
-							</Link>
-						)
-					})
-				}
-			</div>
+					return (
+						<Link
+							href={path}
+							className="px-4 py-6 block group bg-white bg-opacity-10 rounded-sm mb-3 hover:bg-main border-2  border-white border-opacity-10 transition-colors"
+						>
+							<span class="group-hover:text-yellow text-xl font-bold block border-b-white border-b border-opacity-10 pb-4">
+								{tip.data.title}
+							</span>
+							<p class="m-0 mt-4">{tip.data.description}</p>
+						</Link>
+					)
+				})
+			}
 		</div>
 	</Content>
 </BaseDocument>

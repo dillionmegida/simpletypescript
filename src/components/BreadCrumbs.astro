@@ -1,5 +1,5 @@
 ---
-import type { Breadcrumb } from '../types/Breadcrumb'
+import type { Breadcrumb } from "../types/Breadcrumb"
 
 type Props = {
 	paths: Breadcrumb[]
@@ -9,7 +9,15 @@ const { paths } = Astro.props
 ---
 
 <div class="breadcrumb">
-	{paths.map(path => <a href={path.path}>{path.label}</a>)}
+	{
+		paths.map(path =>
+			path.path ? (
+				<a href={path.path}>{path.label}</a>
+			) : (
+				<span>{path.label}</span>
+			)
+		)
+	}
 </div>
 
 <style>
@@ -19,18 +27,22 @@ const { paths } = Astro.props
 		--gap: 10px;
 		gap: var(--gap);
 
-		a {
+		a,
+		span {
 			color: color-mix(in srgb, var(--text-color), var(--primary-color) 20%);
-			transition: 300ms;
-
-			&:hover {
-				color: var(--green);
-			}
 
 			&:not(:first-child)::before {
 				content: "/";
 				display: inline-block;
 				margin-right: var(--gap);
+			}
+		}
+
+		a {
+			transition: 300ms;
+
+			&:hover {
+				color: var(--green);
 			}
 		}
 	}

@@ -14,7 +14,7 @@
    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace; /* this is the default */
    /* The following properties are standard, please leave them as they are */
    /* font-size: clamp(1rem, 7vw, 1.3rem); */
-   font-size: 1em;
+   font-size: 0.95em;
    direction: ltr;
    text-align: left;
    white-space: pre;
@@ -52,7 +52,7 @@
    padding: 1.4em; /* this is standard */
    margin: 0.5em 0; /* this is the default */
    overflow: auto; /* this is standard */
-   border: 1px solid color-mix(in srgb, var(--text-color), transparent 40%);
+   /* border: 1px solid color-mix(in srgb, var(--text-color), transparent 40%); */
  }
  
  /* Properties specific to inline code */

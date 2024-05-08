@@ -1,0 +1,96 @@
+---
+title: "Setting up TypeScript in your JavaScript application"
+description: ""
+---
+
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+
+
+If you're using frameworks like React, Vue, Angular, some of them have a different setup. Some of them also have TypeScript have built-in so you don't have to do anything.
+
+In this lesson, I will show you how to set up TypeScript in a simple JavaScript project.
+
+## Prerequisites
+
+To use TypeScript, you need the following tools installed on your device:
+
+* [NodeJS](https://nodejs.org/en): runtime environment outside the browser
+* [NPM](https://www.npmjs.com/): which we'll use to install packages; you can use [any other package manager](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management#a_rough_guide_to_package_manager_clients) also
+
+## Initialize project
+
+We'll be installing a couple of packages with [NPM](https://www.npmjs.com/) so we're going to initialize our project, which comes with a `package.json` file:
+
+```bash
+npm init --yes
+```
+
+## Install TypeScript Dependencies
+
+Install the `typescript` package:
+
+```bash
+npm install typescript --save-dev
+```
+
+The `--save-dev` flag is for TypeScript to be installed as a [development dependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file).
+
+Install `ts-node`, which allows us to execute typescript code in NodeJS environment.
+
+```bash
+npm install -g ts-node
+```
+
+By default, NodeJS can only execute JavaScript code: `node index.js`, but with `ts-node`, we can run `ts-node index.ts`.
+
+## Initialize TypeScript Configuration
+
+You can configure TypeScript to compile your JavaScript in different ways. For this, you need to create a config file:
+
+```bash
+npx tsc --init
+```
+
+This would create `tsconfig.json` file in your project. We'll talk more about this file later.
+
+---
+
+## Create your first TypeScript file
+
+TypeScript files end with the `ts` extension. Let's see an example of a TypeScript code:
+
+<CodeBlock
+  code={`let course: string = "typescript"
+console.log(course)`}
+  filename="index.ts"
+  lang='ts'
+/>
+
+Don't worry so much about the syntax. But basically what we're saying here is, `course` should have a type of string, which means it can only hold string values.
+
+Now, we can run this code:
+
+```bash
+ts-node index.ts
+# "typescript"
+```
+
+We can also compile this code to JavaScript using:
+
+```bash
+npx tsc index.ts
+```
+
+This will compile the TypeScript code to JavaScript code based on the configurations provided in `tsconfig.json`
+
+import JsTsEditor from "../../components/mdx/JsTsEditor.astro"
+
+<JsTsEditor code1={`let course: string
+  = "typescript"
+console.log(course)`} code2={`let course
+  = "typescript"
+console.log(course)`} />
+
+---
+
+Now that we've been able to set up TypeScript, let's learn more about the TypeScript syntax.

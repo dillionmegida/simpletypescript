@@ -1,1 +1,1 @@
-export type Breadcrumb = { path: string; label: string }
+export type Breadcrumb = { path: string | null; label: string }

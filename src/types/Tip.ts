@@ -10,10 +10,3 @@ export type TipFrontmatter = {
   cover?: string
 }
 
-const obj = {
-  '/about': 'bg-orange',
-  '/contact': 'bg-purple',
-  '/services': 'bg-yellow'
-}
-
-type /**/Path/**/ = keyof typeof obj

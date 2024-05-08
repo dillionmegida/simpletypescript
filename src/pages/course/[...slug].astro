@@ -1,22 +1,36 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content"
 import Course from "../../layouts/Course.astro"
-import type { Tip } from "../../types/Tip"
+import { removeNumberPrefix } from "../../helpers/path"
+import type { Lesson } from "../../types/Course"
 
 export async function getStaticPaths() {
-	const tips: Tip[] = await getCollection("course")
-	return tips.map(tip => ({
-		params: { slug: tip.slug },
-		props: tip,
+	const lessons: (Lesson & { render: any })[] = await getCollection("course")
+	return lessons.map((lesson, i) => ({
+		params: { slug: removeNumberPrefix(lesson.slug) },
+		props: {
+			lesson,
+			render: lesson.render,
+			previousLesson: lessons[i - 1],
+			nextLesson: lessons[i + 1],
+		},
 	}))
 }
-type Props = CollectionEntry<"course">
+type Props = {
+	lesson: CollectionEntry<"course">
+	previousLesson: Lesson
+	nextLesson: Lesson
+}
 
-const demo = Astro.props
-const { Content } = await demo.render()
+const props = Astro.props
+const { Content } = await props.lesson.render()
 ---
 
-<Course {...demo.data}>
+<Course
+	nextLesson={props.nextLesson}
+	previousLesson={props.previousLesson}
+	slug={props.lesson.slug}
+	{...props.lesson.data}
+>
 	<Content />
-	<hr />
 </Course>

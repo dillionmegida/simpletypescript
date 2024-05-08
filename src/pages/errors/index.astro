@@ -10,12 +10,13 @@ const errors: Error[] = await getCollection("error")
 ---
 
 <BaseDocument title="Simple TypeScript Course" description="">
-	<Content breadcrumbs={[]} title="TypeScript Errors Explained" description="">
+	<Content
+		breadcrumbs={[]}
+		title="TypeScript Errors Explained"
+		description="TypeScript errors aren't out of the ordinary. They just require some explanation. And that's what I help you with understanding here, as well as solutions."
+	>
 		<div slot="parent">
-			<p class="mt-4 text-xl">
-				TypeScript errors aren't out of the ordinary. They just require some explanation. And that's what I help you with understanding here, as well as solutions.
-			</p>
-			<div class="mt-8">
+			<div>
 				{
 					errors.map(error => {
 						const path = getFullPath("errors", error.slug)

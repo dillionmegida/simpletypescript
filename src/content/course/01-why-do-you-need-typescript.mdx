@@ -1,0 +1,73 @@
+---
+title: "Why do you need TypeScript?"
+description: "Is TypeScript necessary? Do I really need it to build my applications? Can I just use JavaScript instead?"
+---
+
+import Info from '../../components/mdx/Info.astro'
+
+Take a look at this JavaScript code:
+
+```js
+const course = "TypeScript"
+course.push(5, 6)
+```
+
+Here, `course` is a string, but we attempt to call a `push` method on it. This method is only available on arrays, right?
+
+Well, this code looks "fine" in JavaScript. Let's say you push this code to production, and a user opens the application on their browser. Then they get an error and probably a blank page and non-interactive website. In the console, you'll have this:
+
+```txt
+course.push(5, 6)
+       ^
+TypeError: course.push is not a function
+```
+
+This is a type error. You definitely want to be able to catch this kind of error before it gets to production.
+
+Here are two more examples:
+
+```js
+function total(numbersArray) {
+  return numbersArray.reduce((a, b) => a + b)
+}
+
+total(1, 2, 3)
+// return numbersArray.reduce((a, b) => a + b)
+//                     ^
+// TypeError: numbersArray.reduce is not a function
+```
+
+```js
+const obj = {
+  name: "Deeecode",
+  course: "TypeScript",
+  printName: "I am Deeecode"
+}
+
+obj.printName()
+// obj.printName()
+//     ^
+// TypeError: obj.printName is not a function
+```
+
+These are type related errors where we are performing operations that are not applicable to specific types.
+
+---
+
+You're probably thinking: “why would I ever do this, I can be very careful not to make this mistake”. Well firstly, you're not perfect. When you work on projects where modules and functions are used in different places around your application, you never know when you create a bug that can only be discovered when your code is running.
+
+In a small project, such mistakes could be avoided. But in large applications, you can't always trust yourself.
+
+Also, when you're working on projects that involves multiple people simultaneously, it becomes even more important to not give room for such type related errors.
+
+So how do you ensure that such bugs does not get production? How do you get immediate feedback on what you might be doing wrong?
+
+There are a couple of solutions for this. You could choose to have tests written in a lot of places to catch such bugs. Or put extra reviews in place for added code.
+
+But one of the most popular solutions for type errors right now is **TypeScript**.
+
+<Info>
+If you're working in a company with a large application built around JavaScript, you most likely would be using TypeScript. So learning TypeScript, improves your skills for jobs.
+</Info>
+
+In the rest of this course, we'll be learning about TypeScript, seeing how to set it up, as well the numerous ways you can use TypeScript.

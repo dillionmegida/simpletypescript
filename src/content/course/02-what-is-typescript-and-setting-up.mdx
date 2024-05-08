@@ -1,0 +1,68 @@
+---
+title: "What is TypeScript? And what is Static Typing?"
+description: ""
+---
+
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+
+TypeScript is a superset of JavaScript, which provides **static type checking**. Think of it as JavaScript with powers 🪄. It was created by Microsoft, and the goal was to help catch type-related bugs that can easily creep into production.
+
+With the TypeScript tool, you have your code, and this tool will compile your code to JavaScript as that is what the browser understands, as well as other runtime environments like node.
+
+Although TypeScript requires a bit more work added to the regular JavaScript code that you right, it plays an important role in helping you build type safe applications.
+
+## Dynamically Typed Languages
+
+JavaScript is dynamically typed language, and is often regarded as a loose language. Such languages assign types during runtime. Which means:
+
+```js
+let variable = "string"
+// variable has a string type
+
+variable = [1, 2, 3]
+// variable has a array type
+```
+
+After the first assignment operation, `variable` has a string type.
+After the second assignment operation, `variable` has an array type. You can see that `variable` can have any type based on the data assigned to it. This is the concept of "dynamic"--they type can change, based on the assigned value.
+
+## Static Typed Languages
+
+In contrast, static types do not change. When these types are defined, the assigned value cannot change that definition. A couple of languages fall under this category, including TypeScript (though better referred to as a "tool" and not a language).
+
+Here's what a TypeScript code looks like:
+
+<CodeBlock
+  code={`let variable: string = "string"
+// variable has a static string type
+
+/**/variable/**/ = [1, 2, 3]
+// ts-error **variable** Type 'number[]' is not assignable to type 'string'.`}
+  lang='ts'
+/>
+
+Now we get a TypeScript error. We declared a `string` type for `variable`, by using a colon `:` followed by the type: `string`. When we attempt to assign a value that doesn't match this type to the variable, TypeScript would complain.
+
+Don't worry if you don't understand the error for me. Basically, TypeScript is saying that "an array of numbers cannot be assignable to string".
+
+With static typing, assigning different values do not change the type of the variable (like we saw with dynamically typed languages).
+
+## Dynamic vs Static Typing
+
+Both forms of typing have their pros and cons.
+
+With dynamic typing, you don't need to worry about defining types when building applications. All of that will be figured out by the language when your application is running. This can improve speed when building applications. But the larger your application grows, such applications can be succeptible to type related errors.
+
+With static typing, you usually need to define these types as you build your application. This can be require extra time than what would be needed if you didn't have to worry about them. But as your applications grow, you get to see the benefit of having these things defined already.
+
+## Compiling back to JavaScript
+
+TypeScript is a tool you use for development, but the TypeScript code does not get to production. The reason for this is that, environments like browsers can only interpret JavaScript code.
+
+So while you use TypeScript for development--writing your type-safe code--you would need to convert that TypeScript code to JavaScript before hosting it for production. TypeScript provides the tools for this.
+
+This way, you have some guarantee that you compiled JavaScript code is safe. Because, if there's some type errors, the compilation would fail.
+
+---
+
+Now that we understand how TypeScript is different from JavaScript, let's learn how to set up TypeScript in our application.

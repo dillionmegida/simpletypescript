@@ -2,6 +2,7 @@
 import BaseDocument from "../components/BaseDocument.astro"
 import BreadCrumbs from "../components/BreadCrumbs.astro"
 import type { Breadcrumb } from "../types/Breadcrumb"
+import type { LessonFrontmatter } from "../types/Course"
 import Layout from "./Layout.astro"
 
 type Props = {
@@ -32,10 +33,14 @@ const { title, description, cover, breadcrumbs } = Astro.props
 				</div>
 			</div>
 			<div class="container padding">
-				<div class="content">
-					<slot name="content" />
-				</div>
-				<slot name="parent" />
+				{
+					Astro.slots.has("content") && (
+						<div class="content">
+							<slot name="content" />
+						</div>
+					)
+				}
+				{Astro.slots.has("parent") && <slot name="parent" />}
 				<br />
 			</div>
 			<footer class="text-center mt-20 text-white text-opacity-50 py-20">
@@ -104,6 +109,7 @@ const { title, description, cover, breadcrumbs } = Astro.props
 
 		ul {
 			padding-left: 20px;
+			list-style-type: disc;
 		}
 
 		a {
@@ -123,7 +129,7 @@ const { title, description, cover, breadcrumbs } = Astro.props
 
 	p {
 		margin: 1em 0;
-    line-height: 1.5;
+		line-height: 1.5;
 	}
 
 	code:not([class]) {

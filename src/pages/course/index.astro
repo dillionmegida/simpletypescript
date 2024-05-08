@@ -3,7 +3,7 @@ import { getCollection } from "astro:content"
 import BaseDocument from "../../components/BaseDocument.astro"
 import Layout from "../../layouts/Layout.astro"
 import type { Lesson } from "../../types/Course"
-import { getFullPath } from "../../helpers/path"
+import { getFullPath, removeNumberPrefix } from "../../helpers/path"
 import Link from "../../components/Link.astro"
 import Content from "../../layouts/Content.astro"
 
@@ -11,15 +11,16 @@ const lessons: Lesson[] = await getCollection("course")
 ---
 
 <BaseDocument title="Simplified TypeScript Course" description="">
-	<Content breadcrumbs={[]} title="Simplified TypeScript Course" description="">
+	<Content
+		breadcrumbs={[]}
+		title="Simplified TypeScript Course"
+		description="Learn TypeScript from beginner to advanced with these lessons"
+	>
 		<div slot="parent">
-			<p class="mt-4 text-xl">
-				Learn TypeScript from beginner to advanced with these lessons
-			</p>
-			<div class="mt-8">
+			<div>
 				{
 					lessons.map(lesson => {
-						const path = getFullPath("course", lesson.slug)
+						const path = getFullPath("course", removeNumberPrefix(lesson.slug))
 
 						return (
 							<Link
