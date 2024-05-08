@@ -1,4 +1,5 @@
 ---
+import Pagination from "../components/Pagination.astro"
 import { getFullPath, removeNumberPrefix } from "../helpers/path"
 import type { Breadcrumb } from "../types/Breadcrumb"
 import type { Lesson, LessonFrontmatter } from "../types/Course"
@@ -29,6 +30,22 @@ const breadcrumbs: Breadcrumb[] = [
 		label: lessonNo,
 	},
 ]
+
+let previousContent = undefined
+
+if (previousLesson)
+	previousContent = {
+		path: getFullPath("course", removeNumberPrefix(previousLesson?.slug)),
+		label: previousLesson?.data.title,
+	}
+
+let nextContent = undefined
+
+if (nextLesson)
+	nextContent = {
+		path: getFullPath("course", removeNumberPrefix(nextLesson?.slug)),
+		label: nextLesson?.data.title,
+	}
 ---
 
 <Content
@@ -40,106 +57,55 @@ const breadcrumbs: Breadcrumb[] = [
 	<div slot="content">
 		<slot />
 		<br /><br />
-		<div class="pagination">
-			{
-				previousLesson && (
-					<a
-						href={getFullPath(
-							"course",
-							removeNumberPrefix(previousLesson.slug)
-						)}
-						class="previous"
-					>
-						<span class="arrow">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 24 24"
-								width="18"
-								height="18"
-								fill="currentColor"
-							>
-								<path d="M19.1642 12L12.9571 5.79291L11.5429 7.20712L16.3358 12L11.5429 16.7929L12.9571 18.2071L19.1642 12ZM13.5143 12L7.30722 5.79291L5.89301 7.20712L10.6859 12L5.89301 16.7929L7.30722 18.2071L13.5143 12Z" />
-							</svg>
-						</span>
-						{previousLesson.data.title}
-					</a>
-				)
-			}
-			{
-				nextLesson && (
-					<a
-						href={getFullPath("course", removeNumberPrefix(nextLesson.slug))}
-						class="next"
-					>
-						<span class="arrow">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 24 24"
-								width="18"
-								height="18"
-								fill="currentColor"
-							>
-								<path d="M19.1642 12L12.9571 5.79291L11.5429 7.20712L16.3358 12L11.5429 16.7929L12.9571 18.2071L19.1642 12ZM13.5143 12L7.30722 5.79291L5.89301 7.20712L10.6859 12L5.89301 16.7929L7.30722 18.2071L13.5143 12Z" />
-							</svg>
-						</span>
-						{nextLesson.data.title}
-					</a>
-				)
-			}
-		</div>
+		<Pagination nextContent={nextContent} previousContent={previousContent} />
 	</div>
 </Content>
 
-<style lang="scss">
-	.pagination {
-		display: flex;
-		justify-content: space-between;
-		gap: 30px;
-		flex-wrap: wrap;
-		align-items: flex-start;
-
-		.previous,
-		.next {
-			border: 1px solid var(--white-200);
-			border-radius: 10px;
-			font-size: 0.8em;
-			padding: 30px 20px;
-			transition: 300ms;
-			text-decoration: none;
-			flex: 1;
-			max-width: 300px;
-			position: relative;
-
-			&:hover {
-				background-color: var(--white-200);
-			}
-
-			.arrow {
-				position: absolute;
-				background-color: var(--white-100);
-				width: 30px;
-				height: 30px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        top: -12px;
-			}
-		}
-
-		.previous {
-      .arrow {
-        transform: rotate(180deg);
-				left: 10px;
-			}
-		}
-
-		.next {
-			margin-left: auto;
-
-      .arrow {
-        right: 10px;
-      }
-		}
-	}
-</style>
+<!-- 
+<div class="pagination">
+  {
+    previousLesson && (
+      <a
+        href={getFullPath(
+          "course",
+          removeNumberPrefix(previousLesson.slug)
+        )}
+        class="previous"
+      >
+        <span class="arrow">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="currentColor"
+          >
+            <path d="M19.1642 12L12.9571 5.79291L11.5429 7.20712L16.3358 12L11.5429 16.7929L12.9571 18.2071L19.1642 12ZM13.5143 12L7.30722 5.79291L5.89301 7.20712L10.6859 12L5.89301 16.7929L7.30722 18.2071L13.5143 12Z" />
+          </svg>
+        </span>
+        {previousLesson.data.title}
+      </a>
+    )
+  }
+  {
+    nextLesson && (
+      <a
+        href={getFullPath("course", removeNumberPrefix(nextLesson.slug))}
+        class="next"
+      >
+        <span class="arrow">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="currentColor"
+          >
+            <path d="M19.1642 12L12.9571 5.79291L11.5429 7.20712L16.3358 12L11.5429 16.7929L12.9571 18.2071L19.1642 12ZM13.5143 12L7.30722 5.79291L5.89301 7.20712L10.6859 12L5.89301 16.7929L7.30722 18.2071L13.5143 12Z" />
+          </svg>
+        </span>
+        {nextLesson.data.title}
+      </a>
+    )
+  }
+</div> -->

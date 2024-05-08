@@ -1,6 +1,7 @@
 ---
 title: "What is TypeScript? And what is Static Typing?"
-description: ""
+description: "What's so special about TypeScript? And why is it described as a static typing tool? What makes this different from dynamically typed languages?"
+cover: "/course/what-is-typescript.png"
 ---
 
 import CodeBlock from "../../components/mdx/CodeBlock.astro"
@@ -38,7 +39,7 @@ Here's what a TypeScript code looks like:
 
 /**/variable/**/ = [1, 2, 3]
 // ts-error **variable** Type 'number[]' is not assignable to type 'string'.`}
-  lang='ts'
+lang='ts'
 />
 
 Now we get a TypeScript error. We declared a `string` type for `variable`, by using a colon `:` followed by the type: `string`. When we attempt to assign a value that doesn't match this type to the variable, TypeScript would complain.

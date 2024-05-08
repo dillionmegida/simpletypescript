@@ -4,18 +4,31 @@ import Tip from "../../layouts/Tip.astro"
 import type { Tip as TipType } from "../../types/Tip"
 
 export async function getStaticPaths() {
-	const tips: TipType[] = await getCollection("tip")
-	return tips.map(tip => ({
+	const tips: (TipType & { render: any })[] = await getCollection("tip")
+	return tips.map((tip, i) => ({
 		params: { slug: tip.slug },
-		props: tip,
+		props: {
+			tip,
+			render: tip.render,
+			previousTip: tips[i - 1],
+			nextTip: tips[i + 1],
+		},
 	}))
 }
-type Props = CollectionEntry<"tip">
+type Props = {
+	tip: CollectionEntry<"tip">
+	previousTip: TipType
+	nextTip: TipType
+}
 
-const tip = Astro.props
-const { Content } = await tip.render()
+const props = Astro.props
+const { Content } = await props.tip.render()
 ---
 
-<Tip {...tip.data}>
+<Tip
+	{...props.tip.data}
+	nextTip={props.nextTip}
+	previousTip={props.previousTip}
+>
 	<Content />
 </Tip>
