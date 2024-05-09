@@ -1,0 +1,86 @@
+---
+title: "Insufficient overlaps with types - Convert to unknown first"
+description: "What does this error mean? How do I know what types overlap in TypeScript? How does unknown solve the problem here?"
+---
+
+import CodeBlock from "../../components/mdx/CodeBlock.astro"
+
+Here's one way this error can be triggered:
+
+<CodeBlock
+  code={`let variable = "string";
+
+let value = /**/variable as number/**/
+// ts-error **variable as number** Conversion of type 'string' to type 'number' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first`}
+  lang='ts'
+/>
+
+Here, we have `variable` typed to be string. Then we attempt to do a [Type Assertion](#) `as` for `variable` to be of a `number` type for `data`. But then, TypeScript sees this as "not possible". A `string` type cannot be converted to a `number` type directly because `number` doesn't overlap with `string`.
+
+If you're wondering what an overlap is in this case, let me show you:
+
+```ts
+let variable: 3 | 4 | 5 = 3
+
+let value = variable as number
+// value = 20
+```
+
+Here, we typed `variable` to be a union of `3`, `4` and `5`. In the next line, we cast `variable` as `number` and now things work fine. That's because there's an overlap between `3`, `4`, `5` and `number` which is the fact that they are all numbers.
+
+Another example:
+
+```ts
+function print(param: string | number) {
+  const data = param as number
+}
+```
+
+`param as number` has an overlap with the fact that `param` is typed `string` or `number`.
+
+So back to the original problem:
+
+<CodeBlock
+  code={`let variable = "string";
+
+let value = /**/variable as number/**/
+// ts-error **variable as number** Conversion of type 'string' to type 'number' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first`}
+  lang='ts'
+/>
+
+What if you actually want to cast `variable` as number regardless? In the example above, it might not make sense to do that but let me show you one case where it might make sense:
+
+<CodeBlock
+  code={`const pathname = getPathname()
+const prefixPathname =
+  /**/pathname.match(/\\/[^\\/]+/) as string/**/
+// ts-error **pathname.match(/\\/[^\\/]+/) as string** Conversion of type 'RegExpMatchArray | null' to type 'string' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first...Type 'RegExpMatchArray' is not comparable to type 'string'`}
+  lang='ts'
+/>
+
+This is from the code of this website. You can see [the code here](https://github.com/dillionmegida/simpletypescript/blob/f3004550ddfc51a8a6b70d76bbbc04e882995878/src/components/BaseDocument.astro#L18). What I'm trying to get here is the prefix path. For example, `pathname` of `/about/the-company`, the prefix path will be `/about`. I needed this so that I could style the header navigation links.
+
+From the error, what we see is that `pathname.match(...)` returns a type of `RegExpMatchArray | null`. But I'm trying to cast this return type as `string`. Obviously, `string` doesn't overlap. But in this case, I can say "I am sure this will return a string" because the regex match [which actually returns an array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match#return_value) (if there are matches), will be coerced to a string when I use it in a string expression; just like [I did here](https://github.com/dillionmegida/simpletypescript/blob/f3004550ddfc51a8a6b70d76bbbc04e882995878/src/components/BaseDocument.astro#L28).
+
+In this case, how can I successfully do the type assertion? Well as the TypeScript error hints: "convert the expression to `unknown` first". `unknown` overlaps with any type. As the [doc says](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type):
+
+> Anything is assignable to `unknown`
+
+So we can cast `RegExpMatchArray | null` to `unknown`, then we can cast `unknown` to `string`:
+
+```ts
+const pathname = getPathname()
+const prefixPathname =
+  pathname.match(/\\/[^\\/]+/)
+    as unknown as string
+```
+
+And now, everything works fine. Because `string` also overlaps with `unknown`. For our first example, we can do the same thing:
+
+```ts
+let variable = "string";
+
+let value = variable as unknown as number
+```
+
+`unknown` overlaps with `string`, and `number` overlaps with `unknown`.
