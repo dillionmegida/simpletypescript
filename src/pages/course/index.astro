@@ -1,38 +1,36 @@
 ---
 import { getCollection } from "astro:content"
-import BaseDocument from "../../components/BaseDocument.astro"
-import Layout from "../../layouts/Layout.astro"
 import type { Lesson } from "../../types/Course"
 import { getFullPath, removeNumberPrefix } from "../../helpers/path"
 import Link from "../../components/Link.astro"
 import Content from "../../layouts/Content.astro"
+import { COVERS } from "../../constants"
 
 const lessons: Lesson[] = await getCollection("course")
 ---
 
-<BaseDocument title="Simplified TypeScript Course" description="">
-	<Content
-		breadcrumbs={[]}
-		title="Simplified TypeScript Course"
-		description="Learn TypeScript from beginner to advanced with these lessons"
-	>
-		<div slot="parent">
-			<div>
-				{
-					lessons.map(lesson => {
-						const path = getFullPath("course", removeNumberPrefix(lesson.slug))
+<Content
+	breadcrumbs={[]}
+	title="Simplified TypeScript Course"
+	description="Learn TypeScript from beginner to advanced with these lessons"
+	cover={COVERS.course}
+>
+	<div slot="parent">
+		<div>
+			{
+				lessons.map(lesson => {
+					const path = getFullPath("course", removeNumberPrefix(lesson.slug))
 
-						return (
-							<Link
-								href={path}
-								className="p-4 block bg-white bg-opacity-10 rounded-sm mb-3 hover:bg-primary border-2 hover:text-yellow border-white border-opacity-10 transition-colors"
-							>
-								{lesson.data.title}
-							</Link>
-						)
-					})
-				}
-			</div>
+					return (
+						<Link
+							href={path}
+							className="p-4 block bg-white bg-opacity-10 rounded-sm mb-3 hover:bg-primary border-2 hover:text-yellow border-white border-opacity-10 transition-colors"
+						>
+							{lesson.data.title}
+						</Link>
+					)
+				})
+			}
 		</div>
-	</Content>
-</BaseDocument>
+	</div>
+</Content>

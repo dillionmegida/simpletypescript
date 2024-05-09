@@ -9,22 +9,23 @@ type Props = {
 	title: string
 	description: string
 	cover?: string
+  showCover?: boolean;
 	breadcrumbs: Breadcrumb[]
 }
 
-const { title, description, cover, breadcrumbs } = Astro.props
+const { title, description, cover, breadcrumbs, showCover = false } = Astro.props
 ---
 
 <BaseDocument image={cover} description={description} title={title}>
 	<Layout>
 		<main>
-			<div class={`course-info ${cover && "has-cover"}`}>
+			<div class={`course-info ${cover && showCover && "has-cover"}`}>
 				<div class="container padding">
 					<BreadCrumbs paths={breadcrumbs} />
 					<h1>{title}</h1>
 					<p class="description">{description}</p>
 					{
-						cover && (
+						cover && showCover && (
 							<div class="course-cover">
 								<img src={cover} alt="" />
 							</div>
@@ -112,6 +113,17 @@ const { title, description, cover, breadcrumbs } = Astro.props
 			list-style-type: disc;
 		}
 
+		blockquote {
+			color: color-mix(in srgb, var(--text-color), var(--main-color) 20%);
+			padding: 10px 20px;
+			border-left: 5px solid
+				color-mix(in srgb, var(--text-color), var(--main-color) 80%);
+
+			& > * {
+				margin: 0;
+			}
+		}
+
 		a {
 			transition: 300ms;
 			color: var(--green);
@@ -133,7 +145,11 @@ const { title, description, cover, breadcrumbs } = Astro.props
 	}
 
 	code:not([class]) {
-		background-color: color-mix(in srgb, var(--main-color), black 80%);
+		background-color: color-mix(
+			in srgb,
+			var(--main-color),
+			var(--text-color) 30%
+		);
 		padding: 3px;
 		font-size: 0.9em;
 	}

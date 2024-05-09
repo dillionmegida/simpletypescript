@@ -1,0 +1,41 @@
+---
+import Link from "./Link.astro"
+import X from "./icons/X.astro"
+
+type Props = {
+	text: string
+	category: "tip" | "lesson" | "error explanation"
+}
+
+const { text, category } = Astro.props
+
+const url = new URL(Astro.url.pathname, Astro.site)
+
+const fullText = `${text} ${url}`
+---
+
+<div class="share">
+	<span>Share this {category}:</span>
+	<Link
+		newTab={true}
+		href={`https://twitter.com/intent/tweet?text=${fullText}`}
+	>
+		<X size={24} />
+	</Link>
+</div>
+
+<style lang="scss">
+	.share {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+
+		a {
+			color: var(--text-color);
+
+			&:hover {
+				color: var(--green);
+			}
+		}
+	}
+</style>

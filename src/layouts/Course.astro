@@ -1,5 +1,6 @@
 ---
 import Pagination from "../components/Pagination.astro"
+import Share from "../components/Share.astro"
 import { getFullPath, removeNumberPrefix } from "../helpers/path"
 import type { Breadcrumb } from "../types/Breadcrumb"
 import type { Lesson, LessonFrontmatter } from "../types/Course"
@@ -52,60 +53,14 @@ if (nextLesson)
 	title={title}
 	description={description}
 	cover={cover}
+  showCover={true}
 	breadcrumbs={breadcrumbs}
 >
 	<div slot="content">
 		<slot />
+    <Share category="lesson" text={title} />
 		<br /><br />
+
 		<Pagination nextContent={nextContent} previousContent={previousContent} />
 	</div>
 </Content>
-
-<!-- 
-<div class="pagination">
-  {
-    previousLesson && (
-      <a
-        href={getFullPath(
-          "course",
-          removeNumberPrefix(previousLesson.slug)
-        )}
-        class="previous"
-      >
-        <span class="arrow">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="currentColor"
-          >
-            <path d="M19.1642 12L12.9571 5.79291L11.5429 7.20712L16.3358 12L11.5429 16.7929L12.9571 18.2071L19.1642 12ZM13.5143 12L7.30722 5.79291L5.89301 7.20712L10.6859 12L5.89301 16.7929L7.30722 18.2071L13.5143 12Z" />
-          </svg>
-        </span>
-        {previousLesson.data.title}
-      </a>
-    )
-  }
-  {
-    nextLesson && (
-      <a
-        href={getFullPath("course", removeNumberPrefix(nextLesson.slug))}
-        class="next"
-      >
-        <span class="arrow">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="currentColor"
-          >
-            <path d="M19.1642 12L12.9571 5.79291L11.5429 7.20712L16.3358 12L11.5429 16.7929L12.9571 18.2071L19.1642 12ZM13.5143 12L7.30722 5.79291L5.89301 7.20712L10.6859 12L5.89301 16.7929L7.30722 18.2071L13.5143 12Z" />
-          </svg>
-        </span>
-        {nextLesson.data.title}
-      </a>
-    )
-  }
-</div> -->

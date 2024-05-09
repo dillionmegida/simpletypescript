@@ -5,36 +5,36 @@ import { getFullPath } from "../../helpers/path"
 import Link from "../../components/Link.astro"
 import Content from "../../layouts/Content.astro"
 import type { Error } from "../../types/Error"
+import { COVERS } from "../../constants"
 
 const errors: Error[] = await getCollection("error")
 ---
 
-<BaseDocument title="Simple TypeScript Course" description="">
-	<Content
-		breadcrumbs={[]}
-		title="TypeScript Errors Explained"
-		description="TypeScript errors aren't out of the ordinary. They just require some explanation. And that's what I help you with understanding here, as well as solutions."
-	>
-		<div slot="parent">
-			<div>
-				{
-					errors.map(error => {
-						const path = getFullPath("errors", error.slug)
+<Content
+	breadcrumbs={[]}
+	title="TypeScript Errors Explained"
+	description="TypeScript errors aren't out of the ordinary. They just require some explanation. And that's what I help you with understanding here, as well as solutions."
+	cover={COVERS.errors}
+>
+	<div slot="parent">
+		<div>
+			{
+				errors.map(error => {
+					const path = getFullPath("errors", error.slug)
 
-						return (
-							<Link
-								href={path}
-								className="px-4 py-6 block group bg-white bg-opacity-10 rounded-sm mb-3 hover:bg-main border-2  border-white border-opacity-10 transition-colors"
-							>
-								<span class="group-hover:text-yellow text-xl font-bold block border-b-white border-b border-opacity-10 pb-4">
-									{error.data.title}
-								</span>
-								<p class="m-0 mt-4">{error.data.description}</p>
-							</Link>
-						)
-					})
-				}
-			</div>
+					return (
+						<Link
+							href={path}
+							className="px-4 py-6 block group bg-white bg-opacity-10 rounded-sm mb-3 hover:bg-main border-2  border-white border-opacity-10 transition-colors"
+						>
+							<span class="group-hover:text-yellow text-xl font-bold block border-b-white border-b border-opacity-10 pb-4">
+								{error.data.title}
+							</span>
+							<p class="m-0 mt-4">{error.data.description}</p>
+						</Link>
+					)
+				})
+			}
 		</div>
-	</Content>
-</BaseDocument>
+	</div>
+</Content>

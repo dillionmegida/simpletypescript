@@ -4,18 +4,27 @@ import type { Error as ErrorType } from "../../types/Error"
 import Error from "../../layouts/Error.astro"
 
 export async function getStaticPaths() {
-	const errors: ErrorType[] = await getCollection("error")
-	return errors.map(error => ({
+	const errors: (ErrorType & {render: any})[] = await getCollection("error")
+	return errors.map((error, i) => ({
 		params: { slug: error.slug },
-		props: error,
+		props: {
+      error,
+      nextError: errors[i + 1],
+      previousError: errors[i - 1]
+    },
 	}))
 }
-type Props = CollectionEntry<"error">
 
-const error = Astro.props
-const { Content } = await error.render()
+type Props = {
+  error: CollectionEntry<"error">
+  previousError: ErrorType
+  nextError: ErrorType
+}
+
+const props = Astro.props
+const { Content } = await props.error.render()
 ---
 
-<Error {...error.data}>
+<Error previousError={props.previousError} nextError={props.nextError} {...props.error.data}>
 	<Content />
 </Error>

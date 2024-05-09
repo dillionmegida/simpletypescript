@@ -1,10 +1,17 @@
 ---
-import type { ErrorFrontmatter } from "../types/Error"
+import Pagination from "../components/Pagination.astro"
+import Share from "../components/Share.astro"
+import { COVERS } from "../constants"
+import { getFullPath } from "../helpers/path"
+import type { Error, ErrorFrontmatter } from "../types/Error"
 import Content from "./Content.astro"
 
-type Props = ErrorFrontmatter
+type Props = ErrorFrontmatter & {
+	previousError: Error | null
+	nextError: Error | null
+}
 
-const { title, description } = Astro.props
+const { title, description, previousError, cover, nextError } = Astro.props
 
 const breadcrumbs = [
 	{
@@ -16,10 +23,35 @@ const breadcrumbs = [
 		label: "Errors",
 	},
 ]
+
+let previousContent = undefined
+
+if (previousError)
+	previousContent = {
+		path: getFullPath("errors", previousError.slug),
+		label: previousError.data.title,
+	}
+
+let nextContent = undefined
+
+if (nextError)
+	nextContent = {
+		path: getFullPath("errors", nextError.slug),
+		label: nextError.data.title,
+	}
 ---
 
-<Content breadcrumbs={breadcrumbs} title={title} description={description}>
+<Content
+	cover={cover ?? COVERS.errors}
+	breadcrumbs={breadcrumbs}
+	title={title}
+	description={description}
+>
 	<div slot="content">
 		<slot />
+		<Share category="error explanation" text={title} />
+		<br />
+		<br />
+		<Pagination nextContent={nextContent} previousContent={previousContent} />
 	</div>
 </Content>

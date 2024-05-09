@@ -18,3 +18,10 @@ export const LINKS = {
   },
   mainWebsite: "https://dillionmegida.com/",
 }
+
+export const COVERS = {
+  tips: "/tips-cover.png",
+  errors: "/errors-cover.png",
+  course: "/course-cover.png",
+  site: "/cover.png",
+}

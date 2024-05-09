@@ -9,7 +9,6 @@ export async function getStaticPaths() {
 		params: { slug: tip.slug },
 		props: {
 			tip,
-			render: tip.render,
 			previousTip: tips[i - 1],
 			nextTip: tips[i + 1],
 		},

@@ -5,9 +5,10 @@ type Props = {
 	newTab?: boolean
 	href: string
 	className?: string
+	showIcon?: boolean
 }
 
-const { newTab = false, href, className } = Astro.props
+const { newTab = false, href, className, showIcon = false } = Astro.props
 
 const attr: Props & { target?: "_blank"; rel?: "noopener noreferrer" } = {
 	href,
@@ -19,7 +20,7 @@ if (newTab) {
 	attr.rel = "noopener noreferrer"
 }
 
-const icon = href.startsWith("https://twitter") ? "twitter" : null
+const icon = showIcon && href.startsWith("https://twitter") ? "twitter" : null
 ---
 
 <a {...attr}> {icon && <Icon type="x" size={15} />} <slot /></a>

@@ -1,5 +1,7 @@
 ---
 import Pagination from "../components/Pagination.astro"
+import Share from "../components/Share.astro"
+import { COVERS } from "../constants"
 import { getFullPath } from "../helpers/path"
 import type { Tip, TipFrontmatter } from "../types/Tip"
 import Content from "./Content.astro"
@@ -9,7 +11,7 @@ type Props = TipFrontmatter & {
 	nextTip: Tip | null
 }
 
-const { title, description, nextTip, previousTip } = Astro.props
+const { title, description, cover, nextTip, previousTip } = Astro.props
 
 const breadcrumbs = [
 	{
@@ -26,7 +28,7 @@ let previousContent = undefined
 
 if (previousTip)
 	previousContent = {
-		path: getFullPath('tips', previousTip.slug),
+		path: getFullPath("tips", previousTip.slug),
 		label: previousTip.data.title,
 	}
 
@@ -34,14 +36,20 @@ let nextContent = undefined
 
 if (nextTip)
 	nextContent = {
-		path: getFullPath('tips', nextTip.slug),
+		path: getFullPath("tips", nextTip.slug),
 		label: nextTip.data.title,
 	}
 ---
 
-<Content breadcrumbs={breadcrumbs} title={title} description={description}>
+<Content
+	cover={cover ?? COVERS.tips}
+	breadcrumbs={breadcrumbs}
+	title={title}
+	description={description}
+>
 	<div slot="content">
 		<slot />
+		<Share category="tip" text={title} />
 		<br /><br />
 		<Pagination nextContent={nextContent} previousContent={previousContent} />
 	</div>

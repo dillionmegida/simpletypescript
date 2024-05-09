@@ -10,7 +10,6 @@ export async function getStaticPaths() {
 		params: { slug: removeNumberPrefix(lesson.slug) },
 		props: {
 			lesson,
-			render: lesson.render,
 			previousLesson: lessons[i - 1],
 			nextLesson: lessons[i + 1],
 		},
