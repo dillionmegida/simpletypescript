@@ -1,26 +1,26 @@
 ---
 import { getCollection } from "astro:content"
-import { type Tip } from "../types/Tip"
 import Link from "./Link.astro"
 import { getFullPath } from "../helpers/path"
 import { addEllipsis } from "../helpers/string"
+import type { Error } from "../types/Error"
 
-const tips: Tip[] = await getCollection("tip")
+const errors: Error[] = await getCollection("error")
 ---
 
-<section class="tips-section bg-tips">
+<section class="errors-section bg-errors">
 	<div class="container padding">
-		<h2 class="mb-4">Improve your skills with these tips</h2>
-		<div class="tips">
+		<h2 class="mb-4">Understanding TypeScript Errors</h2>
+		<div class="errors">
 			{
-				tips.map(tip => {
-					const path = getFullPath("tips", tip.slug)
+				errors.map(error => {
+					const path = getFullPath("errors", error.slug)
 
 					return (
-						<Link href={path} className="tip">
-							<span class="title">{tip.data.title}</span>
+						<Link href={path} className="error">
+							<span class="title">{error.data.title}</span>
 							<hr />
-							<p class="description">{addEllipsis(tip.data.description)}</p>
+							<p class="description">{addEllipsis(error.data.description)}</p>
 						</Link>
 					)
 				})
@@ -30,14 +30,14 @@ const tips: Tip[] = await getCollection("tip")
 </section>
 
 <style is:global lang="scss">
-	.tips {
+	.errors {
 		padding: 20px 0;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 		gap: 20px;
 
-		.tip {
-			--main-color: var(--tips-color);
+		.error {
+			--main-color: var(--errors-color);
 			border: 1px solid color-mix(in srgb, var(--main-color), white 20%);
 			padding: 20px;
 			color: var(--text-color);

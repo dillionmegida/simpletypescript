@@ -4,6 +4,9 @@ export default {
 	theme: {
     colors: {
       main: "var(--main-color)",
+      course: "var(--course-color)",
+      tips: "var(--tips-color)",
+      errors: "var(--errors-color)",
       blue: "rgb(41, 151, 246)",
       yellow: "rgb(246, 243, 41)",
       green: "rgb(188, 246, 41)",

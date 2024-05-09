@@ -3,39 +3,33 @@ import { getCollection } from "astro:content"
 import type { Lesson } from "../types/Course"
 import Link from "./Link.astro"
 import { getFullPath, removeNumberPrefix } from "../helpers/path"
-import { addEllipsis } from "../helpers/string"
 
 const lessons: Lesson[] = await getCollection("course")
 ---
 
-<hr />
-<section class="lessons-section">
-	<h2>Working on a course...</h2>
-	<div class="lessons">
-		{
-			lessons.map(lesson => {
-				const path = getFullPath("course", removeNumberPrefix(lesson.slug))
+<section class="bg-course">
+	<div class="padding container">
+		<h2 class="mb-4">Working on a course...</h2>
+		<div class="lessons">
+			{
+				lessons.map(lesson => {
+					const path = getFullPath("course", removeNumberPrefix(lesson.slug))
 
-				return (
-					<Link href={path} className="lesson">
-						<div class="lesson__cover">
-							<img src={lesson.data.cover} alt="" />
-						</div>
-						{/* <span class="title">{lesson.data.title}</span>
-						<hr /> */}
-						{/* <p class="description">{addEllipsis(lesson.data.description)}</p> */}
-					</Link>
-				)
-			})
-		}
+					return (
+						<Link
+							href={path}
+							className="p-4 block bg-opacity-10 rounded-sm mb-3 hover:bg-w border-2 hover:text-yellow border-white border-opacity-10 transition-colors"
+						>
+							{lesson.data.title}
+						</Link>
+					)
+				})
+			}
+		</div>
 	</div>
 </section>
 
 <style is:global lang="scss">
-	.lessons-section {
-		margin: 40px 0;
-	}
-
 	hr {
 		border-color: var(--white-200);
 		margin: 50px 0;
@@ -44,33 +38,25 @@ const lessons: Lesson[] = await getCollection("course")
 
 	.lessons {
 		padding: 20px 0;
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 20px;
+		--main-color: var(--course-color);
 
 		.lesson {
-			border: 1px solid var(--white-200);
+			border: 1px solid color-mix(in srgb, var(--main-color), white 20%);
 			color: var(--text-color);
 			transition: 300ms;
+			overflow: hidden;
+
+			&__cover {
+				transition: 300ms;
+			}
 
 			&:hover {
-				background-color: var(--white-100);
-			}
+				border-color: var(--main-color);
 
-			.title {
-				font-size: 1.4em;
-				font-weight: bold;
-			}
-
-			hr {
-				border-color: var(--white-200);
-				width: 20%;
-				margin: 10px 0 20px;
-			}
-
-			.description {
-				font-size: 0.9em;
-				padding: 20px;
+				.lesson__cover {
+					transform: scale(1.1);
+					background-color: var(--white-100);
+				}
 			}
 		}
 	}

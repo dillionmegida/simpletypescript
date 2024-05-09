@@ -1,6 +1,7 @@
 ---
 import BaseDocument from "../components/BaseDocument.astro"
 import Course from "../components/Course.astro"
+import Errors from "../components/Errors.astro"
 import Link from "../components/Link.astro"
 import Tips from "../components/Tips.astro"
 import Info from "../components/mdx/Info.astro"
@@ -13,20 +14,23 @@ import Layout from "../layouts/Layout.astro"
 	description="Simplified resources on TypeScript from tips to courses to solutions from beginner to advanced"
 >
 	<Layout>
-		<main class="container padding">
-			<h1 class="main-title">simple:<span>typescript</span></h1>
-			<p class="tagline">
-				Simplified resources on TypeScript from tips to courses to solutions
-				from beginner to advanced, created by <Link
-					newTab={true}
-					href={LINKS.mainWebsite}>Dillion</Link
-				>
-			</p>
-			<Info>
-				This website is still a work in progress, but you can find some
-				resources already below
-			</Info>
+		<main class="">
+			<div class="container padding">
+				<h1 class="main-title">simple:<span>typescript</span></h1>
+				<p class="tagline">
+					Simplified resources on TypeScript from tips to courses to solutions
+					from beginner to advanced, created by <Link
+						newTab={true}
+						href={LINKS.mainWebsite}>Dillion</Link
+					>
+				</p>
+				<Info>
+					This website is still a work in progress, but you can find some
+					resources already below
+				</Info>
+			</div>
 			<Tips />
+			<Errors />
 			<Course />
 		</main>
 	</Layout>
