@@ -1,0 +1,61 @@
+---
+title: "Union Types"
+description: "Sometimes, you want to do a this or that type. TypeScript allows you to do this with something called unions."
+cover: "/course/union-types.png"
+---
+
+To create a union, you use the pipe `|` symbol:
+
+```ts
+let item: string | number
+item = "deeecode"
+item = 100
+```
+
+Here, `item` can have values of the `string` type or the `number` type. Any other type will result in an error:
+
+<CodeBlock
+  code={`let item: string | number
+item = "deeecode"
+item = 100
+/**/item/**/ = true
+// ts-error **item** Type 'boolean' is not assignable to type 'string | number'.`}
+  lang='ts'
+/>
+
+Or we can add the `boolean` to the union:
+
+```ts
+let item: string | number | boolean
+item = "deeecode"
+item = 100
+item = true
+```
+
+Union Types can be useful when you want an array to contain multiple items:
+
+<CodeBlock
+  code={`let array: (string | number)[] = []
+
+array.push("some string")
+array.push(10, 40, 50)
+array.push(/**/{}/**/)
+// ts-error **{}** Argument of type '{}' is not assignable to parameter of type 'string | number'`}
+  lang='ts'
+/>
+
+Here, we type `array` to be an array of strings or numbers. Attempting to push `{}` as you see, throws an error.
+
+Another example where unions can be useful is for a function's return type:
+
+```ts
+type User = {
+  //
+}
+
+function getUser(id: string): null | User {
+  // get user
+}
+```
+
+`getUser` takeds an `id` of string, and tries to find that user (from storage somehow). In the case that it does, it returns the user object. In the case that it doesn't, it returns `null`.

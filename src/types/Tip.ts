@@ -9,4 +9,3 @@ export type TipFrontmatter = {
   description: string
   cover?: string
 }
-

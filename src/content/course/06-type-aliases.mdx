@@ -1,0 +1,139 @@
+---
+title: "Type Aliases"
+description: "Just the same way you can create variables for values in JavaScript, and used those variables in different places, you can create 'variables' for types in TypeScript. These are called Type Aliases."
+cover: "/course/type-aliases.png"
+---
+
+We've learnt how to type variables:
+
+```ts
+let variable1: string = "TypeScript"
+let variable2: string = "Python"
+```
+
+Here, we have typed the two variables to be `string`. What if we wanted to change the two types to `number`? Then we have to change it in the two places:
+
+```ts
+let variable1: number = 500
+let variable2: number = 200
+```
+
+Well, instead of that, we can create a **type alias**. Think of it as a variable for types. This is done with the `type` keyword:
+
+```ts
+type MyType = string;
+```
+
+And now can use these types wherever we want:
+
+```ts
+let variable1: MyType = "TypeScript"
+let variable2: MyType = "Python"
+```
+
+And if we need to change this type, we just change it from one place:
+
+```ts
+type MyType = number;
+```
+
+And this would reflect wherever we used `MyType`:
+
+<CodeBlock
+  code={`let /**/variable1/**/: MyType = "TypeScript"
+// ts-error **variable1** Type 'string' is not assignable to type 'number'
+`}
+  lang='ts'
+/>
+
+In the case of strings and numbers or other primitive types, type aliases may not make so much sense. But in the case of object types, they can be very useful:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+  hobbies: string[];
+  address: {
+    country: string;
+    street_name: string;
+    house_number: number;
+  }
+}
+```
+
+Here we have a `User` type alias, and we can use this wherever we want:
+
+```ts
+const user1: User = {
+  name: "deeecode",
+  age: 50,
+  hobbies: ["drawing", "dancing"],
+  address: {
+    country: "Netherlands",
+    house_number: 1000,
+    street_name: "Random"
+  }
+}
+
+const user2: User = {
+  name: "john",
+  age: 25,
+  hobbies: ["singing", "walking"],
+  address: {
+    country: "Belgium",
+    house_number: 112,
+    street_name: "Somewhere"
+  }
+}
+```
+
+If I need to change the user structure, I can change the type alias from one place and it reflects everywhere we used `User`:
+
+```ts {5}
+type User = {
+  name: string;
+  age: number;
+  hobbies: string[];
+  native_language: string;
+  address: {
+    country: string;
+    street_name: string;
+    house_number: number;
+  }
+}
+```
+
+Here, we added `native_language`, and now, `user1` and `user2` will have an error:
+
+<CodeBlock
+  code={`const /**/user1/**/: User = {
+// ts-error **user1** Property 'native_language' is missing in type '{ name: string; age: number; hobbies: string[]; address: { country: string; house_number: number; street_name: string; }; }' but required in type 'User'.
+  name: "deeecode",
+  age: 50,
+  hobbies: ["drawing", "dancing"],
+  address: {
+    country: "Netherlands",
+    house_number: 1000,
+    street_name: "Random"
+  }
+}`}
+  lang='ts'
+/>
+
+We can also make `nativeLanguage` optional in the type alias for the error to go away:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+  hobbies: string[];
+  native_language?: string;
+  address: {
+    country: string;
+    street_name: string;
+    house_number: number;
+  }
+}
+```
+
+So you can see how, instead of repeating the user object type in multiple places, we create an alias for it--like a variable--and now any changes we make to the alias, will reflect wherever it is used.
