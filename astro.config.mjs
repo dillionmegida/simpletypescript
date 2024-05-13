@@ -7,7 +7,6 @@ import tailwind from "@astrojs/tailwind"
 
 // https://astro.build/config
 export default defineConfig({
-  prefetch: true,
   site: "https://simpletypescript.dev",
   markdown: {
     syntaxHighlight: "prism",

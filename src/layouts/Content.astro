@@ -1,6 +1,7 @@
 ---
 import BaseDocument from "../components/BaseDocument.astro"
 import BreadCrumbs from "../components/BreadCrumbs.astro"
+import { updateView } from "../helpers/views"
 import type { Breadcrumb } from "../types/Breadcrumb"
 import Layout from "./Layout.astro"
 
@@ -8,11 +9,21 @@ type Props = {
 	title: string
 	description: string
 	cover?: string
-  showCover?: boolean;
+	showCover?: boolean
 	breadcrumbs: Breadcrumb[]
 }
 
-const { title, description, cover, breadcrumbs, showCover = false } = Astro.props
+const {
+	title,
+	description,
+	cover,
+	breadcrumbs,
+	showCover = false,
+} = Astro.props
+
+const path = Astro.url.pathname
+
+const views = await updateView(path)
 ---
 
 <BaseDocument image={cover} description={description} title={title}>
@@ -23,6 +34,7 @@ const { title, description, cover, breadcrumbs, showCover = false } = Astro.prop
 					<BreadCrumbs paths={breadcrumbs} />
 					<h1>{title}</h1>
 					<p class="description">{description}</p>
+					{views && <span>{views} views</span>}
 					{
 						cover && showCover && (
 							<div class="course-cover">
