@@ -48,8 +48,11 @@ if (nextError)
 	description={description}
 >
 	<div slot="content">
-		<slot />
+    <slot />
+		<br />
+		<br />
 		<Share category="error explanation" text={title} />
+    <hr />
 		<br />
 		<br />
 		<Pagination nextContent={nextContent} previousContent={previousContent} />

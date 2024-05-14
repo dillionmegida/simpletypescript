@@ -1,0 +1,111 @@
+---
+title: "Cannot redeclare block-scoped variable"
+description: "Why does this error exist even when I don't have any duplicate variables in my code? Well, you probably do, but you just don't see it. Let me show you."
+---
+
+While working on my [Getting Started with TypeScript video](https://youtu.be/1F4w31iPX74), I encountered a problem. Sometimes the problem existed as:
+
+```txt
+Duplicate identifier X
+```
+
+or
+
+```txt
+Cannot redeclare block-scoped variable 'X'
+index.ts(a, b): 'X' was also declared here.
+```
+
+And here's what my code looked like:
+
+<CodeBlock
+  filename="file.ts"
+  code={`const value: string = "TypeScript"`}
+  lang='ts'
+/>
+
+What's happening here is that I was redeclaring a variable that already existed in the scope. But when you look at this file, you see I actually wasn't redeclaring `value`. But TypeScript thought I was.
+
+Let me explain the problem and the solution.
+
+## The Problem and Solution
+
+Take a look at this code:
+
+<CodeBlock
+  code={`const /**/value/**/: string = "TypeScript"
+
+// some lines later
+
+const /**/value/**/: number = 40
+// ts-error **value** Cannot redeclare block-scoped variable 'value'`}
+  lang='ts'
+/>
+
+Here, I'm declaring `value` twice, so I get the error. In this case, the error makes sense. But here's another scenario that can cause the error:
+
+<CodeBlock
+  filename="file1.ts"
+  code={`const /**/value/**/: string = "TypeScript"
+// ts-error **value** Cannot redeclare block-scoped variable 'value'`}
+  lang='ts'
+/>
+
+<CodeBlock
+  filename="file2.ts"
+  code={`const /**/value/**/: number = 40
+// ts-error **value** Cannot redeclare block-scoped variable 'value'`}
+  lang='ts'
+/>
+
+In this case, I have two files: `file1.ts` and `file2.ts` and in both of them, I declared `value`. And we get this error again. Apparently, these files are clashing in a way.
+
+They are clashing because TypeScript is treating these two files as scripts, instead of modules. As scripts, they don't have an isolated scope. So they are added in the global scope even though they are in different files.
+
+How do we tell TypeScript that these are modules? We can use the export keyword:
+
+<CodeBlock
+  filename="file1.ts"
+  code={`const value: string = "TypeScript"
+export {}`}
+  lang='ts'
+/>
+
+<CodeBlock
+  filename="file2.ts"
+  code={`const value: number = 40
+export {}`}
+  lang='ts'
+/>
+
+By adding `export {}`, even if we're not actually exporting anything, we inform the TypeScript compiler to treat these files as modules, so they can have their isolated scope.
+
+From the [TypeScript Docs](https://www.typescriptlang.org/docs/handbook/2/modules.html#how-javascript-modules-are-defined):
+
+> In TypeScript, any file containing a top-level import or export is considered a module.
+
+> Conversely, a file without any top-level import or export declarations is treated as a script whose contents are available in the global scope (and therefore to modules as well).
+
+> Modules are executed within their own scope, not in the global scope. This means that variables, functions, classes, etc. declared in a module are not visible outside the module unless they are explicitly exported using one of the export forms.
+
+If you file contains a top-level `import` or `export` declaration, it is considered a module. Else, it will be considered a script "whose contents are available in the global scope", thereby resulting to conflicts in the case of duplicate variable names.
+
+Does this mean you have to add `export {}` everywhere? Well, yes, but no--there is a better solution.
+
+In your `tsconfig.json`, you can update the [compilerOptions.moduleDetection](https://www.typescriptlang.org/tsconfig/#moduleDetection) property to "force":
+
+```json
+{
+  // ...
+  "compilerOptions": {
+    // ...
+    "moduleDetection": "force"
+  }
+}
+```
+
+By default, `moduleDetection` is "auto" which means the compiler would look out for things like `import` or `export` which indicates a file is a module. But with "force", you tell the compiler to treat every file as modules.
+
+---
+
+If all your files should be treated as modules, then this is the option to use. Else, you would have to add `import` or `export` declarations to the specific files, or change the name of the variables so that they do not conflict.
