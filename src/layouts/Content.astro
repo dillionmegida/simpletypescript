@@ -23,7 +23,7 @@ const {
 
 const path = Astro.url.pathname
 
-const views = await updateView(path)
+// const views = await updateView(path)
 ---
 
 <BaseDocument image={cover} description={description} title={title}>
@@ -34,7 +34,7 @@ const views = await updateView(path)
 					<BreadCrumbs paths={breadcrumbs} />
 					<h1>{title}</h1>
 					<p class="description">{description}</p>
-					{views && <span>{views} views</span>}
+					<!-- {views && <span>{views} views</span>} -->
 					{
 						cover && showCover && (
 							<div class="course-cover">
