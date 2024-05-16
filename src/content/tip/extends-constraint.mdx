@@ -1,0 +1,15 @@
+---
+title: ""
+description: ""
+---
+
+```ts
+function getValue<Obj, Key extends keyof Obj>(obj: Obj, key: Key) {
+  return obj[key]
+}
+
+const value2 = getValue({
+  name: "deeecode",
+  age: 10
+}, 'age')
+```

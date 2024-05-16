@@ -3,16 +3,19 @@ import { getCollection } from "astro:content"
 import type { Lesson } from "../types/Course"
 import Link from "./Link.astro"
 import { getFullPath, removeNumberPrefix } from "../helpers/path"
+import { LINKS } from "../constants"
 
 const lessons: Lesson[] = await getCollection("course")
+
+const DISPLAY_LIMIT = 6
 ---
 
 <section class="bg-course">
-	<div class="padding container">
-		<h2 class="mb-4">Working on a course...</h2>
+	<div class="padding-lg container">
+		<h2 class="mb-4">Simplified TypeScript Course</h2>
 		<div class="lessons">
 			{
-				lessons.map(lesson => {
+				lessons.slice(0, DISPLAY_LIMIT).map(lesson => {
 					const path = getFullPath("course", removeNumberPrefix(lesson.slug))
 
 					return (
@@ -26,6 +29,10 @@ const lessons: Lesson[] = await getCollection("course")
 				})
 			}
 		</div>
+		<Link
+			className="bg-green py-3 px-4 border-solid border-2 border-green text-course hover:bg-course hover:text-green transition-colors"
+			href={LINKS.pagePaths.course}>Check out all lessons</Link
+		>
 	</div>
 </section>
 

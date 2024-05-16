@@ -6,6 +6,7 @@
   --tips-color: #14071f;
   --course-color: #041311;
   --errors-color: #1e0404;
+  --concepts-color: #052327;
 
   --blue: rgb(41, 151, 246);
   --yellow: rgb(246, 243, 41);
@@ -41,6 +42,9 @@ html.course {
 }
 html.errors {
   --main-color: var(--errors-color);
+}
+html.concepts {
+  --main-color: var(--concepts-color);
 }
 
 body {
@@ -83,6 +87,10 @@ code {
 
 .container.padding {
   padding: 40px 30px;
+}
+
+.container.padding-lg {
+  padding: 80px 30px;
 }
 
 a {

@@ -12,4 +12,5 @@ export type LessonFrontmatter = {
   title: string
   description: string
   cover?: string
+  video?: string
 }

@@ -5,6 +5,7 @@ import { getFullPath, removeNumberPrefix } from "../helpers/path"
 import type { Breadcrumb } from "../types/Breadcrumb"
 import type { Lesson, LessonFrontmatter } from "../types/Course"
 import Content from "./Content.astro"
+import { YouTube } from "astro-embed"
 
 type Props = LessonFrontmatter &
 	Pick<Lesson, "slug"> & {
@@ -12,7 +13,7 @@ type Props = LessonFrontmatter &
 		nextLesson: Lesson | null
 	}
 
-const { title, description, cover, slug, nextLesson, previousLesson } =
+const { title, description, cover, video, slug, nextLesson, previousLesson } =
 	Astro.props
 
 const lessonNo = slug.match(/\d+/) as unknown as string
@@ -53,16 +54,37 @@ if (nextLesson)
 	title={title}
 	description={description}
 	cover={cover}
-  showCover={true}
 	breadcrumbs={breadcrumbs}
 >
 	<div slot="content">
+		{
+			video && (
+				<div class="video">
+					<YouTube id={video} poster={cover} />
+				</div>
+			)
+		}
 		<slot />
 		<br /><br />
-    <Share category="lesson" text={title} />
-    <hr />
+		<Share category="lesson" text={title} />
+		<hr />
 		<br /><br />
 
 		<Pagination nextContent={nextContent} previousContent={previousContent} />
 	</div>
 </Content>
+
+<style lang="scss">
+	.video {
+		aspect-ratio: 1920 / 1080;
+		width: 100%;
+		position: relative;
+		top: -70px;
+		border: 4px solid var(--white-100);
+
+		& > * {
+			width: 100%;
+			max-width: 100%;
+		}
+	}
+</style>

@@ -15,7 +15,7 @@ const lessons: Lesson[] = await getCollection("course")
 	description="Learn TypeScript from beginner to advanced with these lessons"
 	cover={COVERS.course}
 >
-	<div slot="parent">
+	<div class="items" slot="parent">
 		<div>
 			{
 				lessons.map(lesson => {
@@ -34,3 +34,10 @@ const lessons: Lesson[] = await getCollection("course")
 		</div>
 	</div>
 </Content>
+
+<style>
+  .items {
+    position: relative;
+    top: -70px;
+  }
+</style>

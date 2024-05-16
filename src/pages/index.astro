@@ -4,7 +4,6 @@ import Course from "../components/Course.astro"
 import Errors from "../components/Errors.astro"
 import Link from "../components/Link.astro"
 import Tips from "../components/Tips.astro"
-import Info from "../components/mdx/Info.astro"
 import { LINKS } from "../constants"
 import Layout from "../layouts/Layout.astro"
 ---
@@ -36,14 +35,10 @@ import Layout from "../layouts/Layout.astro"
 						href={LINKS.mainWebsite}>Dillion</Link
 					>
 				</p>
-				<Info>
-					This website is still a work in progress, but you can find some
-					resources already below
-				</Info>
 			</div>
+			<Course />
 			<Tips />
 			<Errors />
-			<Course />
 		</main>
 	</Layout>
 </BaseDocument>
@@ -62,24 +57,22 @@ import Layout from "../layouts/Layout.astro"
 		}
 	}
 
-  .video {
-    display: inline-flex;
-    gap: 10px;
-    align-items: center;
-    background-color: rgb(133, 41, 41);
-    border: 2px solid rgb(168, 56, 56);
-    padding: 20px 30px;
-    margin-bottom: 20px;
-    margin-top: 10px;
-    transition: background-color 300ms;
-    border-radius: 3px;
+	.video {
+		display: inline-flex;
+		gap: 10px;
+		align-items: center;
+		background-color: rgb(133, 41, 41);
+		border: 2px solid rgb(168, 56, 56);
+		padding: 20px 30px;
+		margin-bottom: 20px;
+		margin-top: 10px;
+		transition: background-color 300ms;
+		border-radius: 3px;
 
-    
-    &:hover {
-      background-color: rgb(168, 56, 56);
-
-    }
-  }
+		&:hover {
+			background-color: rgb(168, 56, 56);
+		}
+	}
 
 	.tagline {
 		font-size: 1.1em;
