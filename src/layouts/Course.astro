@@ -16,7 +16,7 @@ type Props = LessonFrontmatter &
 const { title, description, cover, video, slug, nextLesson, previousLesson } =
 	Astro.props
 
-const lessonNo = slug.match(/\d+/) as unknown as string
+const lessonNo = slug.match(/\d+(?:\-\d+)?/) as unknown as string
 
 const breadcrumbs: Breadcrumb[] = [
 	{

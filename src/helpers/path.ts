@@ -5,5 +5,5 @@ export function getFullPath(root: RootPath, slug: string) {
 }
 
 export function removeNumberPrefix(slug: string) {
-  return slug.replace(/\d+\-/, "")
+  return slug.replace(/(\d+\-)+/, "")
 }

@@ -3,6 +3,128 @@ title: "Basic Types"
 video: https://youtu.be/Z9uKKHa2kNE
 ---
 
-<Info>
-  Written version in progress...
-</Info>
+You can create simple to advanced types with TypeScript. We've seen the `string` type, but let's learn about more basic types.
+
+## number
+
+<CodeBlock
+  code={`let num1: number = 20
+/**/num1/**/ = true
+// ts-error **num1** Type 'boolean' is not assignable to type 'number'.`}
+  lang='ts'
+/>
+
+## boolean
+
+<CodeBlock
+  code={`let isRaining: boolean = true
+/**/isRaining/**/ = "false"
+// ts-error **isRaining** Type 'string' is not assignable to type 'boolean'.`}
+  lang='ts'
+/>
+
+## arrays
+
+We can declare an array of `string`s like this:
+
+<CodeBlock
+  code={`let fruits: string[] = ["mango", "orange", "strawberry"]
+fruits.push(/**/20/**/)
+// ts-error **20** Argument of type 'number' is not assignable to parameter of type 'string'.`}
+  lang='ts'
+/>
+
+And an array of `number`s like this:
+
+<CodeBlock
+  code={`let numbers: number[] = [20, 40, 60]
+numbers.push(/**/"hello"/**/)
+// ts-error **"hello"** Argument of type 'string' is not assignable to parameter of type 'number'.`}
+  lang='ts'
+/>
+
+There's also the `Array` type we can use like this:
+
+<CodeBlock
+  code={`let fruits: Array<string> = ["mango", "orange", "strawberry"]
+fruits.push(/**/20/**/)
+// ts-error **20** Argument of type 'number' is not assignable to parameter of type 'string'.`}
+  lang='ts'
+/>
+
+Here we are using the `Array` generic type. Don't worry about this now. We'll learn about [generic types later](/course/type-generics).
+
+## tuples
+
+Tuples are like arrays but with a fixed number of elements which are also typed. Here's an example tuple:
+
+<CodeBlock
+  code={`let tuple: [string, number] = ["hello", 50]
+tuple[/**/2/**/]
+// ts-error **2** Tuple type '[string, number]' of length '2' has no element at index '2'.`}
+  lang='ts'
+/>
+
+As you see above, trying to access an index not in the fixed length throws an error.
+
+<CodeBlock
+  code={`let tuple: [string, number] = ["hello", 50]
+/**/tuple[0]/**/ = 20
+// ts-error **tuple[0]** Type 'number' is not assignable to type 'string'.`}
+  lang='ts'
+/>
+
+From the above example, we assigned the `0` index to `string` so putting a `number` there throws an error.
+
+## undefined
+
+<CodeBlock
+  code={`let user: undefined = undefined
+/**/user/**/ = {
+// ts-error **isRaining** Type '{ name: string; }' is not assignable to type 'undefined'.
+  name: "deeecode"
+}`}
+  lang='ts'
+/>
+
+## object
+
+You can also create an object type:
+
+<CodeBlock
+  code={`let user: {
+  name: string;
+  age: number;
+  isLoggedIn: boolean
+} = {
+  name: "deeecode",
+  age: 40,
+  isLoggedIn: true
+}
+
+user./**/something/**/ = "hello"
+// ts-error **something** Property 'something' does not exist on type '{ name: string; age: number; isLoggedIn: boolean; }'`}
+  lang='ts'
+/>
+
+Our type does not include a `something` field, so trying to add that field throws an error.
+
+Looking at our object type, it's possible that we want one of the fields to be optional. Maybe we don't want the `age` field to be required. For that, we can use a question mark before the colon `?:`:
+
+<CodeBlock
+  code={`let user: {
+  name: string;
+  age?: number;
+  isLoggedIn: boolean
+} = {
+  name: "deeecode",
+  isLoggedIn: true
+}`}
+ lang='ts'
+/>
+
+Since `age` is optional, we do not need to pass it.
+
+---
+
+We'll learn about more ways we can type variables in the coming lessons.
