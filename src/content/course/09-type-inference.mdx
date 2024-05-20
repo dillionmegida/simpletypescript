@@ -1,8 +1,117 @@
 ---
 title: "Easy TypeScript with Type Inference"
+description: "When working with TypeScript, you don't always have to explicitly declare your types. That's because TypeScript can help you infer your types sometimes."
 video: https://youtu.be/Q-KddXKfOJc
+cover: /course/type-inference.png
 ---
 
-<Info>
-  Written version in progress...
-</Info>
+Sometimes, you have to explicitly declare your types, which is type annotation as we have seen so far: `x: type`. But in some cases, you don't have to, as TypeScript can infer types—which is an implicit approach.
+
+## Infer primitive types
+
+<CodeBlock
+  code={`let course = "TypeScript"
+/**/course/**/ = 50
+// ts-error **course** Type 'number' is not assignable to type 'string'.`}
+/>
+
+Here, TypeScript infers that `course` is a `string` type because we assigned a string value `"TypeScript"` when declaring the variable. Attempting to assign a number to `course` now throws a type error.
+
+## Infer arrays
+
+<CodeBlock
+  code={`const values = [1, 2, 3, 4]
+course.push(3)
+values.push(/**/"hello"/**/)
+// ts-error **"hello"** Argument of type 'string' is not assignable to parameter of type 'number'.`}
+/>
+
+Here, TypeScript infers that `values` is an array of numbers: `number[]`. Attempting to push a string to the array will result in a type error.
+
+## Infer objects
+
+```ts
+const user = {
+  name: "deeecode",
+  age: 50,
+  hobbies: ["drawing", "dancing"],
+  address: {
+    country: "Netherlands",
+    house_number: 1000,
+    street_name: "Random"
+  }
+}
+```
+
+Here, TypeScript will infer `user` to be of this type:
+
+```ts
+{
+  name: string;
+  age: number;
+  hobbies: string[];
+  address: {
+    country: string;
+    house_number: number;
+    street_name: string;
+  };
+}
+```
+
+Attempting to access/modify a property not on this type, will throw an error:
+
+<CodeBlock
+  code={`user./**/native_language/**/ = "English"
+// ts-error **native_language** Property 'native_language' does not exist on type '{ name: string; age: number; hobbies: string[]; address: { country: string; house_number: number; street_name: string; }; }'`}
+/>
+
+## Infer functions
+
+You don't always have to explicitly type the returned values of your functions:
+
+<CodeBlock
+  code={`function doSomething() {
+  // something
+}
+
+const result = doSomething()./**/toUpperCase/**/()
+// ts-error **toUpperCase** Property 'toUpperCase' does not exist on type 'void'.`}
+/>
+
+TypeScript infered that `doSomething` returns `void` (because the function does not `return` anything). But if it returned a string, all will be fine:
+
+```ts
+function doSomething() {
+  // something
+  return "deeecode"
+}
+
+const result = doSomething().toUpperCase()
+```
+
+Now TypeScript infers that `doSomething` returns a `string`.
+
+Same way, TypeScript would infer the returned values of callback functions and object methods. But what about parameters?
+
+```ts
+function printName(firstName, lastName) {
+  return `${firstName} ${lastName}`
+}
+```
+
+In this case, TypeScript can infer that `printName` returns a string. It gets the hint from the fact that we `return` a string. But TypeScript has no hints as to what the type of `firstName` or `lastName` would be. In cases like this, type inference cannot help:
+
+```ts
+function printName(
+  firstName: string,
+  lastName: string
+) {
+  return `${firstName} ${lastName}`
+}
+```
+
+You have to explicitly type `firstName` and `lastName`, else, they have `any`, which is the default type. [More on `any` later](/course/any-type) in this course.
+
+---
+
+Type Inference is one of the concepts that makes TypeScript somewhat easy to write. People get bored about that fact that you have to explicitly type everything. Well you don't have to, unless you need to. TypeScript can help you in many cases as long as you give the right hints.

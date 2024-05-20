@@ -3,11 +3,11 @@ import { Prism } from "@astrojs/prism"
 
 type Props = {
 	code: string
-	lang: string
+	lang?: string
 	filename?: string
 }
 
-const { code, lang, filename = null } = Astro.props
+const { code = "", lang = 'ts', filename = null } = Astro.props
 
 const tooltip = /\n\/\/\sts-(error|info)\s\*\*([^*]*)\*\*\s([^\n]*)/g
 

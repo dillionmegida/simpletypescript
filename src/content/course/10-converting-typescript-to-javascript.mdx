@@ -1,8 +1,36 @@
 ---
 title: "Converting TypeScript to JavaScript"
+description: "The browser does not understand TypeScript. Sending your TypeScript code over to the browser will result in errors. So while you use TypeScript for development, you have to convert that code to JavaScript which the browser understands. Here's how..."
 video: https://youtu.be/3kxcj-yO6fw
+cover: /course/from-ts-to-js.png
 ---
 
-<Info>
-  Written version in progress...
-</Info>
+<CodeBlock
+  filename="mycode.ts"
+  code={`let course: string = "typescript"
+course = "python"`}
+/>
+
+Let's say you wanted to run this code in a browser, you would have to convert this from TypeScript to JavaScript. The browser understands JavaScript so you have to make this code production ready so that your users can run it in their browsers.
+
+To do that, you can use the `tsc` compiler (coming from the `typescript` package):
+
+```sh
+npx tsc mycode.ts
+```
+
+This will convert `mycode.ts` to `mycode.js`:
+
+import JsTsEditor from "../../components/mdx/JsTsEditor.astro"
+
+<JsTsEditor code1={`let course: string
+  = "typescript"
+course = "python"`} code2={`let course
+  = "typescript"
+course = "python`} />
+
+Now, you can use `mycode.js` in your browser. During the convertion from TypeScript to JavaScript, the compiler would throw an error if there is a type error. If none, the convertion works fine, and this gives you confidence in how type safe your code is.
+
+---
+
+Again, if you're using frameworks, you most likely don't have to run this code. When I write TypeScript in Astro and React, I never have to run `tsc` myself. The framework will automatically run the compiler for you in the framework's build process. We're only doing this because we are working with vanilla JavaScript.

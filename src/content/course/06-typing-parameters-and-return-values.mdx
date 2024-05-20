@@ -1,8 +1,35 @@
 ---
 title: "Typing Parameters & Return Values"
 video: https://youtu.be/TecvOAhICxM
+cover: /course/typing-functions.png
 ---
 
-<Info>
-  Written version in progress...
-</Info>
+You can type function parameters like this:
+
+<CodeBlock
+  code={`function total(numbers: number[]) {
+  return numbers.reduce((a, b) => a + b)
+}
+
+total([/**/"string1"/**/])
+// ts-error **"string1"** Type 'string' is not assignable to type 'number'.
+`}
+  lang='ts'
+/>
+
+Here, we type the `numbers` parameter to be an array of numbers. So when we pass an array of strings, we get an array.
+
+Also, we can type the return value of a function:
+
+<CodeBlock
+  code={`function introduce(
+  firstName: string,
+  lastName: string
+): string {
+  /**/return/**/ 500
+// ts-error **"string1"** Type 'number' is not assignable to type 'string'.
+}`}
+  lang='ts'
+/>
+
+By putting `: type` after the parentheses `()`, we declare the type that this function should return. So when we return a `number` from the function, we get an error.

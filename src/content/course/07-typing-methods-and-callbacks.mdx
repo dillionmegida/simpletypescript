@@ -1,8 +1,104 @@
 ---
 title: "Typing Methods & Callbacks"
 video: https://youtu.be/pp797IKf4-k
+cover: /course/methods-and-callbacks.png
 ---
 
-<Info>
-  Written version in progress...
-</Info>
+We've seen how to type function paramenters and return values in the previous lesson. But how about typing functions that are passed to other functions (known as callbacks) and how about object methods?
+
+## Typing callback functions
+
+Let's say you have a callback function like this:
+
+```ts
+function higherOrderFunction(cb) {
+  // do something
+  cb()
+}
+
+function printName() {
+  console.log('deeecode')
+}
+
+higherOrderFunction(printName)
+// deeecode
+```
+
+Here, `cb` is a callback parameter, and later on, we pass `printName` as the callback to `higherOrderFunction`. So how can we type `cb`?
+
+You can use this syntax: `(args) => return`. You type the args (if any) and the returned value of the callback. For example:
+
+<CodeBlock
+  code={`function higherOrderFunction(cb: () => void) {
+  // do something
+  cb()
+}
+
+function printName(name: string) {
+  console.log(name)
+}
+
+higherOrderFunction(/**/printName/**/)
+// ts-error **printName** Argument of type '(name: string) => void' is not assignable to parameter of type '() => void'`}
+  lang='ts'
+/>
+
+We typed `cb` in `higherOrderFunction` to be `() => void`, which means it takes no argumnts and it returns nothing (`void`).
+
+We could type `cb` to take an argument:
+
+```ts
+function higherOrderFunction(cb: (name: string) => void) {
+  // do something
+  cb("deeecode")
+}
+
+function printName(name: string) {
+  console.log(name)
+}
+
+higherOrderFunction(printName)
+```
+
+By doing that, the type for `cb` now matches `printName`. We can now call `cb` with a name argument. If `cb` were to return a value, we can replace `void`:
+
+<CodeBlock
+  code={`function higherOrderFunction(cb: (name: string) => string) {
+  // do something
+  cb("deeecode")
+}
+
+function printName(name: string) {
+  console.log(name)
+}
+
+higherOrderFunction(/**/printName/**/)
+// ts-error **printName** Argument of type '(name: string) => void' is not assignable to parameter of type '(name: string) => string'`}
+  lang='ts'
+/>
+
+`cb` is typed to return a `string`, but `printName` does not return anything (so `void`). Now TypeScript tells us that `printName`, passed to `higherOrderFunction` has to return a string to be type correct.
+
+## Typing object methods
+
+You can use the same syntax for object methods, for example:
+
+<CodeBlock
+  code={`const myObj: {
+    name: string;
+    sum: (num1: number, num2: number) => number
+} = {
+  name: "deeecode",
+  sum: function(num1, num2) {
+    return num1 + num2
+  }
+}
+
+const total = myObj.sum(10, /**/"20"/**/)
+// ts-error **20** Argument of type 'string' is not assignable to parameter of type 'number'.`}
+  lang='ts'
+/>
+
+Here, we type `myObj` to be `name` of `string` and `sum` as a function with two `number` parameters returning a `number`.
+
+When using `sum`, passing a string `"20"` as the second argument for `num2`, we get an error.
