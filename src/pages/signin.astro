@@ -1,0 +1,24 @@
+---
+import { SignIn } from "astro-clerk-auth/components/interactive"
+import Layout from "../layouts/Layout.astro"
+import BaseDocument from "../components/BaseDocument.astro"
+---
+
+<BaseDocument
+	title="Sign in to view courses"
+	description=""
+>
+	<Layout>
+		<div class="signin">
+			<SignIn fallbackRedirectUrl={'/course'} />
+		</div>
+	</Layout>
+</BaseDocument>
+
+<style>
+	.signin {
+		display: flex;
+		justify-content: center;
+		padding: 40px 0;
+	}
+</style>

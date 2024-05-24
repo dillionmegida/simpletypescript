@@ -1,0 +1,24 @@
+---
+import { SignUp } from "astro-clerk-auth/components/interactive"
+import Layout from "../layouts/Layout.astro"
+import BaseDocument from "../components/BaseDocument.astro"
+---
+
+<BaseDocument
+	title="Sign up to view courses"
+	description=""
+>
+	<Layout>
+		<div class="signup">
+			<SignUp />
+		</div>
+	</Layout>
+</BaseDocument>
+
+<style>
+	.signup {
+		display: flex;
+		justify-content: center;
+		padding: 40px 0;
+	}
+</style>

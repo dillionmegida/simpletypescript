@@ -12,6 +12,8 @@ export const LINKS = {
     errors: "/errors",
   } as const,
 
+  oneHrVideo: "https://youtu.be/1F4w31iPX74",
+
   twitter: {
     link: "https://twitter.com/iamdillion",
     username: "iamdillion",

@@ -4,6 +4,8 @@ import partytown from "@astrojs/partytown"
 import sitemap from "@astrojs/sitemap"
 import AutoImport from "astro-auto-import"
 import tailwind from "@astrojs/tailwind"
+import clerk from "astro-clerk-auth"
+import netlify from "@astrojs/netlify"
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,6 +14,7 @@ export default defineConfig({
     syntaxHighlight: "prism",
   },
   integrations: [
+    clerk(),
     sitemap(),
     AutoImport({
       imports: [
@@ -22,9 +25,11 @@ export default defineConfig({
     mdx(),
     partytown({
       config: {
-        forward: ["dataLayer.push", 'gtag'],
+        forward: ["dataLayer.push", "gtag"],
       },
     }),
     tailwind(),
   ],
+  output: "hybrid",
+  adapter: netlify(),
 })

@@ -1,10 +1,12 @@
 ---
 import Pagination from "../components/Pagination.astro"
 import Share from "../components/Share.astro"
-import { getFullPath, removeNumberPrefix } from "../helpers/path"
+import { getFullPath } from "../helpers/path"
 import type { Breadcrumb } from "../types/Breadcrumb"
 import type { Lesson, LessonFrontmatter } from "../types/Course"
 import Content from "./Content.astro"
+import { SignedIn, SignedOut } from "astro-clerk-auth/components/control"
+import {SignIn} from "astro-clerk-auth/components/interactive"
 import { YouTube } from "astro-embed"
 
 type Props = LessonFrontmatter &
@@ -37,7 +39,7 @@ let previousContent = undefined
 
 if (previousLesson)
 	previousContent = {
-		path: getFullPath("course", removeNumberPrefix(previousLesson?.slug)),
+		path: getFullPath("course", previousLesson?.slug),
 		label: previousLesson?.data.title,
 	}
 
@@ -45,7 +47,7 @@ let nextContent = undefined
 
 if (nextLesson)
 	nextContent = {
-		path: getFullPath("course", removeNumberPrefix(nextLesson?.slug)),
+		path: getFullPath("course", nextLesson?.slug),
 		label: nextLesson?.data.title,
 	}
 ---
@@ -57,20 +59,32 @@ if (nextLesson)
 	breadcrumbs={breadcrumbs}
 >
 	<div slot="content">
-		{
-			video && (
-				<div class="video">
-					<YouTube id={video} poster={cover} />
-				</div>
-			)
-		}
-		<slot />
-		<br /><br />
-		<Share category="lesson" text={title} />
-		<hr />
-		<br /><br />
+		<SignedIn>
+			{
+				video && (
+					<div class="video">
+						<YouTube id={video} poster={cover} />
+					</div>
+				)
+			}
+			<slot />
+			<br /><br />
+			<Share category="lesson" text={title} />
+			<hr />
+			<br /><br />
 
-		<Pagination nextContent={nextContent} previousContent={previousContent} />
+			<Pagination nextContent={nextContent} previousContent={previousContent} />
+		</SignedIn>
+		<SignedOut>
+			<div class="signin">
+				<SignIn
+       
+					routing="hash"
+					signUpFallbackRedirectUrl={`/course/${slug}`}
+          fallbackRedirectUrl={`/course/${slug}`}
+				/>
+			</div>
+		</SignedOut> 
 	</div>
 </Content>
 
@@ -86,5 +100,10 @@ if (nextLesson)
 			width: 100%;
 			max-width: 100%;
 		}
+	}
+
+	.signin {
+		display: flex;
+		justify-content: center;
 	}
 </style>

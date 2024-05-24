@@ -1,5 +1,7 @@
 ---
 import { LINKS } from "../constants"
+import { UserButton } from "astro-clerk-auth/components/interactive"
+import { SignedIn, SignedOut } from "astro-clerk-auth/components/control"
 
 const links = [
 	{ path: LINKS.pagePaths.tips, label: "Tips" },
@@ -8,6 +10,8 @@ const links = [
 ]
 
 const pathname = new URL(Astro.request.url).pathname
+
+const showSigninState = pathname.startsWith(LINKS.pagePaths.course)
 ---
 
 <header>
@@ -25,6 +29,19 @@ const pathname = new URL(Astro.request.url).pathname
 						</a>
 					))
 				}
+
+				{
+					showSigninState && (
+						<>
+							<UserButton />
+							<SignedOut>
+								<a class="signin" href="/signin">
+									Sign in
+								</a>
+							</SignedOut>
+						</>
+					)
+				}
 			</div>
 		</nav>
 	</div>
@@ -32,21 +49,21 @@ const pathname = new URL(Astro.request.url).pathname
 
 <style lang="scss">
 	header {
-    background-color: color-mix(in srgb, var(--main-color), white 10%);
-    border-bottom: 4px solid var(--white-100);
+		background-color: color-mix(in srgb, var(--main-color), white 10%);
+		border-bottom: 4px solid var(--white-100);
 
-    .padding {
-      padding-top: 0;
-      padding-bottom: 0;
-    }
-    
+		.padding {
+			padding-top: 0;
+			padding-bottom: 0;
+		}
+
 		nav {
-      display: flex;
+			display: flex;
 			gap: 30px;
-      padding: 20px 0;
+			padding: 20px 0;
 			align-items: center;
 		}
-    
+
 		.brand {
 			background-color: var(--white-100);
 			border: 2px solid var(--white-200);
@@ -68,14 +85,31 @@ const pathname = new URL(Astro.request.url).pathname
 
 		nav .other-links {
 			display: flex;
+			align-items: center;
 			gap: 20px;
 
 			a {
 				color: var(--text-color);
-				transition: color 300ms;
+				transition:
+					color 300ms,
+					background-color 300ms;
 
-				&:hover, &.active {
+				&:hover,
+				&.active {
 					color: var(--yellow);
+				}
+			}
+
+			.signin {
+				border: 1px solid var(--blue);
+				color: var(--blue);
+				padding: 5px 10px;
+				border-radius: 2px;
+				margin-left: 20px;
+
+				&:hover {
+					background-color: var(--blue);
+					color: white;
 				}
 			}
 		}
